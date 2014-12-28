@@ -7,11 +7,10 @@
         id        = "com.qdev.WHAMI5"
         version   = "1.0.0">
 
-    <name>WHAMI5</name>
+    <name>Whami Base</name>
 
     <description>
-        TEST PGB
-    </description>
+Test Dec 28    </description>
 
     <author href="http://qdevinc.com" email="kevin.wei@qdevinc.com">
         Kevin Wei
