@@ -2,27 +2,9 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 	    
 	    var watchId;
 	    var locationFlag;
-            var MyCurrentIPAddress = getRealIpAddr();
+            var MyCurrentIPAddress = "111.111.111.111";
             var MyRecipientHolderStringManual = "Whami Location Observation - manual";
             var MyRecipientHolderStringAuto = "Whami Location Observation - auto";
-
-function getRealIpAddr()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
-    {
-      $ip=$_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
-    {
-      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    else
-    {
-      $ip=$_SERVER['REMOTE_ADDR'];
-    }
-    return $ip;
-}
-
 
 	    return {
 	      start: function ( ) {
