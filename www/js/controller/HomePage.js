@@ -3,7 +3,9 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		//alert("clicked");
 	 $state.transitionTo('tabs.home');
 	}
-    
+    var MyCurrentIPAddress = "111.111.111.111";
+    var MyRecipientHolderStringManual = "Whami Location Observation - manual";
+   
     var TimeInterval = localStorage.getItem("timeInterVal");
 	 alert(TimeInterval);
 	if(TimeInterval == null){
@@ -45,9 +47,9 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
            form.append('ownerId' , userId);
            form.append('tickitStatus' , "7");
            form.append('tickitType' , "11");
-           form.append('recipient' , "chris@abc.com");
+           form.append('recipient' , MyRecipientHolderStringManual );
            form.append('subject' , "Create ticket");
-           form.append('ip' , "192.168.1.217");
+           form.append('ip' , MyCurrentIPAddress);
            form.append('gps' , latitudeManual + ";" + longitudeManual);
              $.ajax({
 						url: manualTickitUrl,
