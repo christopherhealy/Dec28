@@ -13,9 +13,9 @@
       _IPAddress =$_SERVER['REMOTE_ADDR'];
     }
 
-    var _recipientAuto = "Auto Location Observation";
-    var _recipientManual = "Manual Location Observation";
-    var _tickitType = "20";
+    var _recipient = "Location Observation";
+    
+    var _tickitType = "11";
 
     var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
 
@@ -38,7 +38,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 	    var TimeInterval = localStorage.getItem("timeInterVal");
 	     //alert(TimeInterval);
 		if(gpsAuto == 'true'){
-			//alert("11");
+			//alert(_tickitType);
 			 geoLocationService.start(TimeInterval);
 			}else{
 				 geoLocationService.stop();
@@ -65,10 +65,10 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		
 	   form.append('ownerId' , userId);
 	   form.append('tickitStatus' , "7");
-	   form.append('tickitType' , "11");
-	   form.append('recipient' , "chris@abc.com");
+	   form.append('tickitType' , _tickitType);
+	   form.append('recipient' , _recipient);
 	   form.append('subject' , "Create ticket");
-	   form.append('ip' , "192.168.1.217");
+	   form.append('ip' , _IPAddress);
 	   form.append('gps' , latitudeManual + ";" + longitudeManual);
 	     $.ajax({
 		url: manualTickitUrl,
