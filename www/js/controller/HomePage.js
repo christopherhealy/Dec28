@@ -1,23 +1,3 @@
-//declare some useful global variables
-    var _IPAddress = "not.ava.ila.ble";
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   
-    {
-      _IPAddress =$_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
-    {
-      _IPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    else
-    {
-      _IPAddress =$_SERVER['REMOTE_ADDR'];
-    }
-
-    var _recipientAuto = "Auto Location Observation";
-   
-    var _tickitType = "20";
-
-    var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
 
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {

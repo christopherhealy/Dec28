@@ -1,4 +1,23 @@
-var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
+
+//declare some useful global variables
+    var _IPAddress = "not.ava.ila.ble";
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   
+    {
+      _IPAddress =$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
+    {
+      _IPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      _IPAddress =$_SERVER['REMOTE_ADDR'];
+    }
+
+    var _recipient = "Location Observation";   
+    var _tickitType = "20";
+
+    var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
 
 ionicApp.controller('MainCtrl', function($scope,$rootScope ,$ionicLoading,geoLocationService) {
 $scope.showLoader = function (){
