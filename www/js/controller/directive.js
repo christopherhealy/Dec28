@@ -1,270 +1,209 @@
-ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordovaGeolocation', '$http', function ($interval,$cordovaDialogs,$cordovaGeolocation,$http) {
-	    
-	    var watchId;
-	    var locationFlag;
-                        
-	    return {
-	      start: function ( ) {
-	      	console.log("started");
-	        watchId = $interval(function () {
-	          //alert(TimeInterval);
-	          $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
-									 console.log("Your latitude is " + position.coords.latitude);
-									 console.log("Your latitude is " + position.coords.longitude);
-									// Position here: position.coords.latitude, position.coords.longitude
-									var latitude =  position.coords.latitude;
-									var longitude = position.coords.longitude;
-									var userId = JSON.parse(localStorage.getItem("user")).userId;						
-									var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-									var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-									var dd1 = new Date();
-								      var currentHours1 = dd1.getHours();
-								      var currentMin1 = dd1.getMinutes();
-								      var currentSec1 = dd1.getSeconds();
 
-								      if (currentHours1 < 10) {
-								                currentHours1 = "0" + currentHours1;
-								            }
-								      if (currentMin1 < 10) {
-								                currentMin1 = "0" + currentMin1;
-								            }
-								      if (currentSec1 < 10) {
-								                currentSec1 = "0" + currentSec1;
-								            }      
-								    var time = currentHours1+":"+currentMin1+":"+currentSec1;
-									console.log(time);
-									var compareLat = localStorage.getItem("lat");
-							         var compareLong = localStorage.getItem("long");
-							         var threePlacedLat = parseFloat(latitude).toFixed(3);
-							         var threePlacedLong = parseFloat(longitude).toFixed(3);
-							         var threePlacedcompareLat = parseFloat(compareLat).toFixed(3);
-							         var threePlacedcompareLong = parseFloat(compareLong).toFixed(3);
-							         if(threePlacedLat == threePlacedcompareLat && threePlacedLong == threePlacedcompareLong){
-							          locationFlag = 0;
-							         }else{
-							          locationFlag = 1;
-							         }
-
-							         var watch = $cordovaGeolocation.watchPosition({ frequency: 60000 });
-							           watch.promise.then(function() {}, 
-							             function(err) {
-							               // An error occurred.
-							             }, 
-							             function(position) {
-							               // Active updates of the position here
-							               // position.coords.[ latitude / longitude]
-							           });
-							          if(locationFlag == 1){ 
-							           localStorage.setItem("lat", latitude);
-							           localStorage.setItem("long", longitude);
-									var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
-									
-									var form = new FormData();
-									
-							           form.append('ownerId' , userId);
-							           form.append('tickitStatus' , "7");
-							           form.append('msgBody' ,userName);
-							           form.append('tickitType' , "20");
-							           form.append('recipient' , MyRecipientHolderStringManual );
-							           form.append('subject' , time);
-							           form.append('ip' , MyCurrentIPAddress);
-							           form.append('gps' , latitude + ";" + longitude);
-							             $.ajax({
-													url: manualTickitUrl,
-													data: form,
-													dataType: 'text',
-													processData: false,
-													contentType: false,
-													type: 'POST',
-													success: function(data){
-													//console.log(JSON.stringify(form));	
-													console.log(JSON.stringify(data));
-													},
-													error:function(data){
-														console.log(JSON.stringify(data));
-														}
-												  });
-							             	}	
-								
-								}, function(err) {
-								  console.log(err);
-								});  
-
-	        },15000);
-	      },
-	      stop: function () {
-	      	console.log("stoped");
-	        if (watchId) {
-	          $interval.cancel(watchId);
-	        }
-	      }
-	    };
-	  }]);
-
-ionicApp.factory('friendlist', function ($http,$state,$ionicLoading) {
-
-    var current = {}; 
-       var factory = {            
-           query: function () {
-			  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-			  var URL =  _baseUrl + "userService/" + 333234567 + "/fetchUsers";
-			  var getFriendListData = {};
-			  $ionicLoading.show({
-							     content: '<h1><i class="icon ion-refreshing"></i></h1>',
-							      animation: 'fade-in',
-							      showBackdrop: true,
-							      maxWidth: 200,
-							      showDelay: 50
-							    });
-              var  data = $http.get(URL,getFriendListData,{ cache: false }).then(function (result) {
-                         //console.log(JSON.stringify(result));
-                            current = result.data.userList; 
-                             $state.transitionTo('tabs.friendlist');                           
-                             $ionicLoading.hide();
-                        }, function (result) {
-                        	$ionicLoading.hide();
-                            alert("Error: No data returned");
-                            console.log(JSON.stringify(result));
-                           
-                        })
-
-            },
-            getList: function () {
-                       
-               return current;
-            }
-       }       
-        return factory; 
-  });
-
-
-ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', function ($cordovaGeolocation,$http) {
-	    'use strict';
-	    var watchId;
-	
-	    return {		
-	    configureBackgroundGeoLocation: function() {
-	    	console.log("configureBackgroundGeoLocation");
-		// Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
-		// in order to prompt the user for Location permission.
-		window.navigator.geolocation.getCurrentPosition(function(location) {
-		console.log('Location from Phonegap');
-		});
-		var bgGeo = window.plugins.backgroundGeoLocation;
-		/**
-		* This would be your own callback for Ajax-requests after POSTing background geolocation to your server.
-		*/
-		var yourAjaxCallback = function(response) {
-		////
-		// IMPORTANT: You must execute the #finish method here to inform the native plugin that you're finished,
-		// and the background-task may be completed. You must do this regardless if your HTTP request is successful or not.
-		// IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-		//
-		bgGeo.finish();
-		//document.getElementById('app').innerHTML += "yourAjaxCallback is called <br>";
-		};
-		/**
-		* This callback will be executed every time a geolocation is recorded in the background.
-		*/
-		var callbackFn = function(location) {
-		console.log('[js] BackgroundGeoLocation callback: ' + location.latitude + ',' + location.longitude);
-		//create tickit
-		var manualTickitUrl = _baseUrl + "tickitService/" + "333234567" +"/createTickit" ;
-		var userId = JSON.parse(localStorage.getItem("user")).userId;						
-		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-		  var dd1 = new Date();
-	      var currentHours1 = dd1.getHours();
-	      var currentMin1 = dd1.getMinutes();
-	      var currentSec1 = dd1.getSeconds();
-
-	      if (currentHours1 < 10) {
-	                currentHours1 = "0" + currentHours1;
-	            }
-	      if (currentMin1 < 10) {
-	                currentMin1 = "0" + currentMin1;
-	            }
-	      if (currentSec1 < 10) {
-	                currentSec1 = "0" + currentSec1;
-	            }      
-	    var time = currentHours1+":"+currentMin1+":"+currentSec1;
-	console.log(time);
-		//var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/createTickit';
-		var form = new FormData();
-		form.append('ownerId' , userId);
-		form.append('tickitStatus' , "8");
-		form.append('msgBody' , userName);
-		form.append('tickitType' , "20");
-		form.append('recipient' , MyRecipientHolderStringAuto);
-		form.append('subject' , time);
-		form.append('ip' , MyRecipientHolderStringManual);
-		form.append('gps' , location.latitude + ";" + location.longitude);
-		$.ajax({
-		url: manualTickitUrl,
-		data: form,
-		dataType: 'text',
-		processData: false,
-		contentType: false,
-		type: 'POST',
-		success: function(data){
-		},
-		error:function(data){
-		}
-		});
-		// Log to my server
-		$.ajax({
-		url: 'http://qdevinc.com/test/requestDump',
-		type: "POST",
-		dataType: 'text',
-		cache: false,
-		processData: false,
-		contentType: false,
-		data: form,
-		success: function( data, textStatus, jqXHR ){
-		//alert('registration id = '+e.regid);
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-		},
-		complete: function(){
-		}
-		});	
-		
-		yourAjaxCallback.call(this);
-		};
-		var failureFn = function(error) {
-		console.log('BackgroundGeoLocation error');
-		}
-		// BackgroundGeoLocation is highly configurable.
-		bgGeo.configure(callbackFn, failureFn, {
-		url: 'http://qdevinc.com/test/requestDump', // <-- only required for Android; ios allows javascript callbacks for your http
-		params: {
-            auth_token: 'user_secret_auth_token',    //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
-            foo: 'bar'                              //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
+/* directive.js Dec 30 2014
+//  notes:
+*/
+ionicApp.service("geoLocationService", [ "$interval", "$cordovaDialogs", "$cordovaGeolocation", "$http", function(a, b, c, d) {
+    var e;
+    var f;
+    return {
+        start: function() {
+            console.log("started");
+            e = a(function() {
+                c.getCurrentPosition({
+                    maximumAge: 7e3,
+                    timeout: 15e3,
+                    enableHighAccuracy: true
+                }).then(function(a) {
+                    console.log("Your latitude is " + a.coords.latitude);
+                    console.log("Your latitude is " + a.coords.longitude);
+                    var b = a.coords.latitude;
+                    var d = a.coords.longitude;
+                    var e = JSON.parse(localStorage.getItem("user")).userId;
+                    var g = JSON.parse(localStorage.getItem("user")).apiKey;
+                    var h = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
+                    var i = new Date();
+                    var j = i.getHours();
+                    var k = i.getMinutes();
+                    var l = i.getSeconds();
+                    if (j < 10) j = "0" + j;
+                    if (k < 10) k = "0" + k;
+                    if (l < 10) l = "0" + l;
+                    var m = j + ":" + k + ":" + l;
+                    console.log(m);
+                    var n = localStorage.getItem("lat");
+                    var o = localStorage.getItem("long");
+                    var p = parseFloat(b).toFixed(3);
+                    var q = parseFloat(d).toFixed(3);
+                    var r = parseFloat(n).toFixed(3);
+                    var s = parseFloat(o).toFixed(3);
+                    if (p == r && q == s) f = 0; else f = 1;
+                    var t = c.watchPosition({
+                        frequency: 6e4
+                    });
+                    t.promise.then(function() {}, function(a) {}, function(a) {});
+                    if (1 == f) {
+                        localStorage.setItem("lat", b);
+                        localStorage.setItem("long", d);
+                        var u = _baseUrl + "tickitService/" + g + "/createTickit";
+                        var v = new FormData();
+                        v.append("ownerId", e);
+                        v.append("tickitStatus", "7");
+                        v.append("msgBody", h);
+                        v.append("tickitType", "20");
+                        v.append("recipient", MyRecipientHolderStringManual);
+                        v.append("subject", m);
+                        v.append("ip", MyCurrentIPAddress);
+                        v.append("gps", b + ";" + d);
+                        $.ajax({
+                            url: u,
+                            data: v,
+                            dataType: "text",
+                            processData: false,
+                            contentType: false,
+                            type: "POST",
+                            success: function(a) {
+                                console.log(JSON.stringify(a));
+                            },
+                            error: function(a) {
+                                console.log(JSON.stringify(a));
+                            }
+                        });
+                    }
+                }, function(a) {
+                    console.log(a);
+                });
+            }, 15e3);
         },
-        headers: {                                   // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations
-            "X-Foo": "BAR"
-        },
-		desiredAccuracy: 50,
-		stationaryRadius: 20,
-		distanceFilter: 30,
-		notificationTitle: 'WHAMI Tracking', // <-- android only, customize the title of the notification
-		notificationText: 'Enabled', // <-- android only, customize the text of the notification
-		activityType: "AutomotiveNavigation", // <-- iOS-only
-		debug: true // <-- enable this hear sounds for background-geolocation life-cycle.
-		});
-		},
-		startTracking: function(){
-			console.log("startTracking");
-		// Turn ON the background-geolocation system. The user will be tracked whenever they suspend the app.
-		var bgGeo = window.plugins.backgroundGeoLocation;
-		bgGeo.start();
-		},
-		stopTracking: function(){
-		console.log("stopTracking");
-		var bgGeo = window.plugins.backgroundGeoLocation;
-		bgGeo.stop();
-		}
-			
-	      
-	    };
-	  }]);
+        stop: function() {
+            console.log("stoped");
+            if (e) a.cancel(e);
+        }
+    };
+} ]);
 
+ionicApp.factory("friendlist", function(a, b, c) {
+    var d = {};
+    var e = {
+        query: function() {
+            var e = JSON.parse(localStorage.getItem("user")).apiKey;
+            var f = _baseUrl + "userService/" + 333234567 + "/fetchUsers";
+            var g = {};
+            c.show({
+                content: '<h1><i class="icon ion-refreshing"></i></h1>',
+                animation: "fade-in",
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 50
+            });
+            var h = a.get(f, g, {
+                cache: false
+            }).then(function(a) {
+                d = a.data.userList;
+                b.transitionTo("tabs.friendlist");
+                c.hide();
+            }, function(a) {
+                c.hide();
+                alert("Error: No data returned");
+                console.log(JSON.stringify(a));
+            });
+        },
+        getList: function() {
+            return d;
+        }
+    };
+    return e;
+});
+
+ionicApp.service("backGeoLocationService", [ "$cordovaGeolocation", "$http", function(a, b) {
+    "use strict";
+    var c;
+    return {
+        configureBackgroundGeoLocation: function() {
+            console.log("configureBackgroundGeoLocation");
+            window.navigator.geolocation.getCurrentPosition(function(a) {
+                console.log("Location from Phonegap");
+            });
+            var a = window.plugins.backgroundGeoLocation;
+            var b = function(b) {
+                a.finish();
+            };
+            var c = function(a) {
+                console.log("[js] BackgroundGeoLocation callback: " + a.latitude + "," + a.longitude);
+                var c = _baseUrl + "tickitService/" + "333234567" + "/createTickit";
+                var d = JSON.parse(localStorage.getItem("user")).userId;
+                var e = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
+                var f = new Date();
+                var g = f.getHours();
+                var h = f.getMinutes();
+                var i = f.getSeconds();
+                if (g < 10) g = "0" + g;
+                if (h < 10) h = "0" + h;
+                if (i < 10) i = "0" + i;
+                var j = g + ":" + h + ":" + i;
+                console.log(j);
+                var k = new FormData();
+                k.append("ownerId", d);
+                k.append("tickitStatus", "8");
+                k.append("msgBody", e);
+                k.append("tickitType", "20");
+                k.append("recipient", MyRecipientHolderStringAuto);
+                k.append("subject", j);
+                k.append("ip", MyRecipientHolderStringManual);
+                k.append("gps", a.latitude + ";" + a.longitude);
+                $.ajax({
+                    url: c,
+                    data: k,
+                    dataType: "text",
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function(a) {},
+                    error: function(a) {}
+                });
+                $.ajax({
+                    url: "http://qdevinc.com/test/requestDump",
+                    type: "POST",
+                    dataType: "text",
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    data: k,
+                    success: function(a, b, c) {},
+                    error: function(a, b, c) {},
+                    complete: function() {}
+                });
+                b.call(this);
+            };
+            var d = function(a) {
+                console.log("BackgroundGeoLocation error");
+            };
+            a.configure(c, d, {
+                url: "http://qdevinc.com/test/requestDump",
+                params: {
+                    auth_token: "user_secret_auth_token",
+                    foo: "bar"
+                },
+                headers: {
+                    "X-Foo": "BAR"
+                },
+                desiredAccuracy: 50,
+                stationaryRadius: 20,
+                distanceFilter: 30,
+                notificationTitle: "WHAMI Tracking",
+                notificationText: "Enabled",
+                activityType: "AutomotiveNavigation",
+                debug: true
+            });
+        },
+        startTracking: function() {
+            console.log("startTracking");
+            var a = window.plugins.backgroundGeoLocation;
+            a.start();
+        },
+        stopTracking: function() {
+            console.log("stopTracking");
+            var a = window.plugins.backgroundGeoLocation;
+            a.stop();
+        }
+    };
+} ]);

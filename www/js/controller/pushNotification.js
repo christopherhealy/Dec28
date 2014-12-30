@@ -1,69 +1,50 @@
-var friendList = new Array ();
+/*  pushNotification.js Dec 30 2014
+//  notes: apiKey is literal ? need to fix that
+*/
 
-ionicApp.controller('sendPushNotificationCtrl', function($scope,friendlist,$state,$http,$cordovaDialogs) {
-//$scope.friend.selected = {selected: true};
-$scope.friends = friendlist.getList();
- 
+var friendList = new Array();
 
-  $scope.selectedfrnd = function() {
-    friendList = [];
-$('#frndselect input[type=checkbox]:checked').each(function() {
-        //$(this).val();
-        friendList.push( Number ( $(this).val()  ) );
-       });
-  	 console.log(JSON.stringify(friendList));
-	$state.transitionTo('tabs.sendPushNotification');
-	  }	  
-
-
-$scope.sendPushNotification = function(pushMsg){
-
-var sendPushaUrl = _baseUrl + "userService/" + "333234567" +"/sendPushNotification";
- 
-  var userId = JSON.parse(localStorage.getItem("user")).userId; 
-  var sendTo = JSON.stringify(friendList);
-  console.log(sendTo);
-        var pushNotificationData = {};
-            pushNotificationData['senderId'] = userId;
-            pushNotificationData['message'] = pushMsg;
-            pushNotificationData['userId'] = friendList;
-            console.log(JSON.stringify(pushNotificationData));
-              $scope.$parent.showLoader();
-  var  responsePromise = $http.post(sendPushaUrl,pushNotificationData, { cache: false });
-
-        responsePromise.success(function(data, status, headers, config) {
-        	friendList = [];
-          console.log(JSON.stringify(data));
-          if(status == 'OK' ){
-            $scope.$parent.hideLoader();
-          		function alertDismissed() {
-				 $state.transitionTo('tabs.ticket');
-					}
-
-					navigator.notification.alert(
-					    data.message,  // message
-					    alertDismissed,         // callback
-					    'Message',            // title
-					    'Done'                  // buttonName
-					);
-
-          }else{
-              $scope.$parent.hideLoader();
-          	navigator.notification.alert(
-					    data.message,  // message
-					    alertDismissed,         // callback
-					    'Message',            // title
-					    'Done'                  // buttonName
-					);
-          }
-         
-
-       })
-       
-       responsePromise.error(function(data, status, headers, config) {
-        console.log(JSON.stringify(data)); 
-        $scope.$parent.hideLoader();
-       });
-
-       }
+ionicApp.controller("sendPushNotificationCtrl", function(a, b, c, d, e) {
+    a.friends = b.getList();
+    a.selectedfrnd = function() {
+        friendList = [];
+        $("#frndselect input[type=checkbox]:checked").each(function() {
+            friendList.push(Number($(this).val()));
+        });
+        console.log(JSON.stringify(friendList));
+        c.transitionTo("tabs.sendPushNotification");
+    };
+    a.sendPushNotification = function(b) {
+        var e = _baseUrl + "userService/" + "333234567" + "/sendPushNotification";
+        var f = JSON.parse(localStorage.getItem("user")).userId;
+        var g = JSON.stringify(friendList);
+        console.log(g);
+        var h = {};
+        h["senderId"] = f;
+        h["message"] = b;
+        h["userId"] = friendList;
+        console.log(JSON.stringify(h));
+        a.$parent.showLoader();
+        var i = d.post(e, h, {
+            cache: false
+        });
+        i.success(function(b, d, e, f) {
+            friendList = [];
+            console.log(JSON.stringify(b));
+            if ("OK" == d) {
+                a.$parent.hideLoader();
+                function g() {
+                    c.transitionTo("tabs.ticket");
+                }
+                navigator.notification.alert(b.message, g, "Message", "Done");
+            } else {
+                a.$parent.hideLoader();
+                navigator.notification.alert(b.message, g, "Message", "Done");
+            }
+        });
+        i.error(function(b, c, d, e) {
+            console.log(JSON.stringify(b));
+            a.$parent.hideLoader();
+        });
+    };
 });
