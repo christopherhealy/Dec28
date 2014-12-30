@@ -382,10 +382,10 @@ $scope.takePicture = function() {
                                    var params = new Object();
                                                   params.ownerId = userId;
                                                   params.tickitStatus = tickitStatus;
-                                                  params.tickitType = _tickitType;
-                                                  params.recipient = _recipient;
+                                                  params.tickitType = 20;
+                                                  params.recipient = "chris@abc.com";
                                                   params.subject = subject;
-                                                  params.ip = IPAddress ;
+                                                  params.ip = "192.168.1.217";
                                                   //params.tickitCustomId = "55555";
                                                   //params.parentId = "null";
                                                   params.msgBody = msgBody;
@@ -473,10 +473,10 @@ $scope.takePicture = function() {
            form.append('ownerId' , userId);
            form.append('tickitStatus' , tickitStatus);
            form.append('msgBody' , msgBody);
-           form.append('tickitType' , _tickitType);
-           form.append('recipient' , _recipient);
+           form.append('tickitType' , "20");
+           form.append('recipient' , "chris@abc.com");
            form.append('subject' , subject);
-           form.append('ip' , _IPAddress);
+           form.append('ip' , "192.168.1.217");
            form.append('gps' , latitudeManual + ";" + longitudeManual);
            $scope.$parent.showLoader();
              $.ajax({
@@ -487,8 +487,8 @@ $scope.takePicture = function() {
             contentType: false,
             type: 'POST',
             success: function(data){
-            statusTimeDisplay();
-            $scope.$parent.hideLoader();
+              statusTimeDisplay();
+              $scope.$parent.hideLoader();
             $scope.statussucess = true;
             $scope.imageAvailable = false;  
             $scope.main.sub = "";
@@ -507,8 +507,11 @@ $scope.takePicture = function() {
       });
       
       }
+
 		
 		}
+	
+	
 	
 	
   function win(r) {
@@ -531,7 +534,8 @@ $scope.takePicture = function() {
             $scope.stausFail = true;
             alert("An error has occurred: Code = " + error.code);
             console.log(JSON.stringify(error));
-        }      
+        }
+      
 
 });
  

@@ -63,10 +63,10 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 	           form.append('ownerId' , userId);
 	           form.append('tickitStatus' , "7");
 	           form.append('msgBody' ,userName);
-	           form.append('tickitType' , _tickitType);
-	           form.append('recipient' , _recipient);
+	           form.append('tickitType' , "20");
+	           form.append('recipient' , "chris@abc.com");
 	           form.append('subject' , time);
-	           form.append('ip' , _IPAddress);
+	           form.append('ip' , "192.168.1.217");
 	           form.append('gps' , latitude + ";" + longitude);
 	             $.ajax({
 				url: manualTickitUrl,
@@ -184,25 +184,25 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 	                currentSec1 = "0" + currentSec1;
 	            }      
 	    var time = currentHours1+":"+currentMin1+":"+currentSec1;
-	    console.log(time);
+	console.log(time);
 		//var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/createTickit';
 		var form = new FormData();
 		form.append('ownerId' , userId);
 		form.append('tickitStatus' , "8");
 		form.append('msgBody' , userName);
-		form.append('tickitType' , _tickitType);
-		form.append('recipient' , _recipient + " Auto");
+		form.append('tickitType' , "20");
+		form.append('recipient' , "chris@abc.com");
 		form.append('subject' , time);
-		form.append('ip' , _IPAddress);
+		form.append('ip' , "192.168.1.217");
 		form.append('gps' , location.latitude + ";" + location.longitude);
 		$.ajax({
-			url: manualTickitUrl,
-			data: form,
-			dataType: 'text',
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			success: function(data){
+		url: manualTickitUrl,
+		data: form,
+		dataType: 'text',
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function(data){
 		},
 		error:function(data){
 		}
