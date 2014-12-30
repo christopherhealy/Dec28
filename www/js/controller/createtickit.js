@@ -132,8 +132,11 @@ $scope.backToHome = function(){
            flagNetwork = 2;
            $state.go($state.$current, null, { reload: true });  
          }
+
+
       
 });
+
 
  function checkNetwork(){
   var networkSet = localStorage.getItem("networkSet"); 
@@ -147,8 +150,11 @@ $scope.backToHome = function(){
            $scope.ethernet = false;
            $scope.unknown = false;    
         var type = $cordovaNetwork.getNetwork();
-        var isOnline = $cordovaNetwork.isOnline();          
-        var isOffline = $cordovaNetwork.isOffline();        
+
+        var isOnline = $cordovaNetwork.isOnline();
+          
+        var isOffline = $cordovaNetwork.isOffline();
+        
         var states = {};
         states[Connection.UNKNOWN]  = 'unknown';
         states[Connection.ETHERNET] = 'ethernet';
@@ -397,6 +403,7 @@ $scope.takePicture = function() {
                               
                                    options.params =  params;
 
+
                                     console.log(JSON.stringify(options));
 
                                     var ft = new FileTransfer();
@@ -420,18 +427,18 @@ $scope.takePicture = function() {
 	}
 	
 	
-      $scope.ticketupload = function(tickitNumber){
+	$scope.ticketupload = function(tickitNumber){
 
       var type = $cordovaNetwork.getNetwork();
       if(type == "none" ){
           alert("No Network Connection");
       }else{
          // alert("else");
-      var tickitStatus = tickitNumber;
-      var subject = document.getElementById("subject").value;
+          var tickitStatus = tickitNumber;
+    var subject = document.getElementById("subject").value;
       var msgBody = document.getElementById("msgbody").value;
       var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-      var dd = new Date();
+     var dd = new Date();
       var currentHours = dd.getHours();
       var currentMin = dd.getMinutes();
       var currentSec = dd.getSeconds();
@@ -514,18 +521,18 @@ $scope.takePicture = function() {
 	
 	
   function win(r) {
-	    statusTimeDisplay();
-	    $scope.statussucess = true;
+				    statusTimeDisplay();
+	          $scope.statussucess = true;
             $scope.$parent.hideLoader();
             $scope.imageAvailable = false;  
             $scope.main.sub = "";
             $scope.main.msg = "";
-	    //$state.transitionTo('tabs.ticket');    
+	          //$state.transitionTo('tabs.ticket');    
             console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
             console.log(r.response);
-            //getUploadedImage();
+          //  getUploadedImage();
         }
 
         function fail(error) {

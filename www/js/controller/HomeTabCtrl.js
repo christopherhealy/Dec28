@@ -1,37 +1,19 @@
-
-//declare some useful global variables
-    var _IPAddress = "not.ava.ila.ble";
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   
-    {
-      _IPAddress =$_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
-    {
-      _IPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    else
-    {
-      _IPAddress =$_SERVER['REMOTE_ADDR'];
-    }
-
-    var _recipient = "Location Observation";   
-    var _tickitType = "11";
-
-    var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
+var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
+//var _baseUrl = "http://192.168.1.217:8080/flippadoo/mobile/"
 
 ionicApp.controller('MainCtrl', function($scope,$rootScope ,$ionicLoading,geoLocationService) {
 $scope.showLoader = function (){
-      $ionicLoading.show({
-      content: '<h1><i class="icon ion-refreshing"></i></h1>',
-      animation: 'fade-in',
-      showBackdrop: true,
-      maxWidth: 200,
-      showDelay: 50
-});
-			}
+								$ionicLoading.show({
+							     content: '<h1><i class="icon ion-refreshing"></i></h1>',
+							      animation: 'fade-in',
+							      showBackdrop: true,
+							      maxWidth: 200,
+							      showDelay: 50
+							    });
+ 							}
  $scope.hideLoader = function (){
- $ionicLoading.hide();
-}
+							$ionicLoading.hide();
+						}
 
 });    
 
@@ -88,10 +70,11 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
 	       logindata['deviceId'] = deviceId;
 	       logindata['deviceType'] = "iPhone";
 	       
-	   console.log(JSON.stringify(logindata));
+	   	   console.log(JSON.stringify(logindata));
 
-	  $scope.$parent.showLoader();
-	  var  responsePromise = $http.post(loginUrl ,logindata,{ cache: false });
+
+	   	   	$scope.$parent.showLoader();
+	        var  responsePromise = $http.post(loginUrl ,logindata,{ cache: false });
           responsePromise.success(function(data, status, headers, config) {
           console.log(JSON.stringify(data));
           var logindata = (JSON.stringify(data.user));
@@ -104,7 +87,7 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
 	      }else{
 	      alert(data.error);
 	      $scope.$parent.hideLoader();
-		   }
+		     }
 	   })
 	   
 	   responsePromise.error(function(data, status, headers, config) {
@@ -123,3 +106,4 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
  });
 
  
+
