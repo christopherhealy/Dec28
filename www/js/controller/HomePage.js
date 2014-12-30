@@ -3,8 +3,25 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		//alert("clicked");
 	 $state.transitionTo('tabs.home');
 	}
-    var MyCurrentIPAddress = "111.111.111.111";
+
+    var MyCurrentIPAddress = "not.available'; //default
+
+   if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+      MyCurrentIPAddress =$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+      MyCurrentIPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      MyCurrentIPAddress =$_SERVER['REMOTE_ADDR'];
+    }
+
     var MyRecipientHolderStringManual = "Whami Location Observation - manual";
+    var MyRecipientHolderStringAuto = "Whami Location Observation - auto";
+
    
     var TimeInterval = localStorage.getItem("timeInterVal");
 	 alert(TimeInterval);
@@ -12,7 +29,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		//alert("ay");
 		localStorage.setItem("timeInterVal",300000);
 		}
-    
+
     $scope.profileData = JSON.parse(localStorage.getItem("user"));
 	var gpsAuto = localStorage.getItem("gpsAuto");
 	    //alert(gpsAuto);
@@ -24,6 +41,8 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 			}else{
 				 geoLocationService.stop();
 				}
+
+        
 
 	$scope.createTickit = function() {
 		//alert("clicked");

@@ -389,9 +389,9 @@ $scope.takePicture = function() {
                                                   params.ownerId = userId;
                                                   params.tickitStatus = tickitStatus;
                                                   params.tickitType = 20;
-                                                  params.recipient = "chris@abc.com";
+                                                  params.recipient = MyRecipientHolderStringManual + "-cs";
                                                   params.subject = subject;
-                                                  params.ip = "192.168.1.217";
+                                                  params.ip = MyCurrentIPAddress;
                                                   //params.tickitCustomId = "55555";
                                                   //params.parentId = "null";
                                                   params.msgBody = msgBody;
@@ -435,10 +435,10 @@ $scope.takePicture = function() {
       }else{
          // alert("else");
           var tickitStatus = tickitNumber;
-    var subject = document.getElementById("subject").value;
+      var subject = document.getElementById("subject").value;
       var msgBody = document.getElementById("msgbody").value;
       var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-     var dd = new Date();
+      var dd = new Date();
       var currentHours = dd.getHours();
       var currentMin = dd.getMinutes();
       var currentSec = dd.getSeconds();
@@ -480,9 +480,9 @@ $scope.takePicture = function() {
            form.append('tickitStatus' , tickitStatus);
            form.append('msgBody' , msgBody);
            form.append('tickitType' , "20");
-           form.append('recipient' , "chris@abc.com");
+           form.append('recipient' , MyRecipientHolderStringManual);
            form.append('subject' , subject);
-           form.append('ip' , "192.168.1.217");
+           form.append('ip' , MyCurrentIPAddress);
            form.append('gps' , latitudeManual + ";" + longitudeManual);
            $scope.$parent.showLoader();
              $.ajax({

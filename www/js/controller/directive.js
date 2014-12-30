@@ -2,10 +2,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 	    
 	    var watchId;
 	    var locationFlag;
-            var MyCurrentIPAddress = "111.111.111.111";
-            var MyRecipientHolderStringManual = "Whami Location Observation - manual";
-            var MyRecipientHolderStringAuto = "Whami Location Observation - auto";
-
+                        
 	    return {
 	      start: function ( ) {
 	      	console.log("started");
@@ -48,7 +45,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 							          locationFlag = 1;
 							         }
 
-							         var watch = $cordovaGeolocation.watchPosition({ frequency: 10000 });
+							         var watch = $cordovaGeolocation.watchPosition({ frequency: 60000 });
 							           watch.promise.then(function() {}, 
 							             function(err) {
 							               // An error occurred.
