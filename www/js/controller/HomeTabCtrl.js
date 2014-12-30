@@ -3,15 +3,15 @@
     var _IPAddress = "not.ava.ila.ble";
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   
     {
-     // _IPAddress =$_SERVER['HTTP_CLIENT_IP'];
+      _IPAddress =$_SERVER['HTTP_CLIENT_IP'];
     }
     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
     {
-      // _IPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
+      _IPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     else
     {
-      // _IPAddress =$_SERVER['REMOTE_ADDR'];
+      _IPAddress =$_SERVER['REMOTE_ADDR'];
     }
 
     var _recipient = "Location Observation";   
