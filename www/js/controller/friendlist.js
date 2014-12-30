@@ -1,136 +1,98 @@
-ionicApp.controller('friendlistctrl', function($scope,friendlist,$state,$cordovaContacts,$timeout) {
+/*  map.js Dec 30 2014
+//  notes:showing the apiKey as a literal (333?) need to look at that
+*/
 
-	$scope.sendMail = function(personEmailId,personName){
-		
-		$scope.personName = personName;
-        window.plugin.email.isServiceAvailable(
-            function (isAvailable) {
-            	var emailId = JSON.parse(localStorage.getItem("user")).emailId;
-            	var bodytext = "<p>Hi  " + personName + ",</p><p>I am using Whami - a fun and free app that enables you to find me on a map.</p><p>If you want to know where I am, use this map link:</p><p><a href='http://dev.tickittaskit.com/flippadoo/app/findMe/ " + emailId + "'>http://dev.tickittaskit.com/flippadoo/app/findMe/" + emailId + "</a></p><p>Thanks for following me</p>";
-		       
-                // alert('Service is not available') unless isAvailable;
-                if(isAvailable){
- 
-                 window.plugin.email.open({
-                     to:      [personEmailId],
-                     cc:      [''],
-                     bcc:     [''],
-                     subject: 'Greetings',
-                     body:    bodytext,
-                     isHtml:  true
-                 });
-
-                }else{
-                 alert("do not support");
+ionicApp.controller("mapctrl", [ "$stateParams", "$scope", "leafletEvents", "$http", "$state", function(a, b, c, d, e) {
+    var f = 5;
+    b.homePage = function() {
+        e.transitionTo("tabs.ticket");
+    };
+    function g() {
+        var c = _baseUrl + "userService/" + "333234567" + "/fetchUserLatLng?userId=" + a.contactId + "&lastNLatLng=" + f;
+        var e = d.get(c, {
+            cache: false
+        });
+        e.success(function(a, c, d, e) {
+            console.log(JSON.stringify(a));
+            var f = a.geolocationList;
+            b.markers = new Array();
+            for (var g = 0; g < f.length; g++) {
+                console.log(f[g].latitude);
+                console.log(f[g].longitude);
+                var h = f[g].tickitStatusModel.label;
+                console.log(h);
+                if ("Completed" == h) var i = {
+                    iconUrl: "img/pin_blue.png",
+                    iconSize: [ 38, 45 ],
+                    shadowSize: [ 50, 64 ],
+                    iconAnchor: [ 22, 94 ],
+                    shadowAnchor: [ 4, 62 ],
+                    popupAnchor: [ -3, -76 ]
+                };
+                if ("rejected" == h) var i = {
+                    iconUrl: "img/pin_red.png",
+                    iconSize: [ 38, 45 ],
+                    shadowSize: [ 50, 64 ],
+                    iconAnchor: [ 22, 94 ],
+                    shadowAnchor: [ 4, 62 ],
+                    popupAnchor: [ -3, -76 ]
+                };
+                if ("Unassigned" == h) var i = {
+                    iconUrl: "img/pin_yellow.png",
+                    iconSize: [ 38, 45 ],
+                    shadowSize: [ 50, 64 ],
+                    iconAnchor: [ 22, 94 ],
+                    shadowAnchor: [ 4, 62 ],
+                    popupAnchor: [ -3, -76 ]
+                };
+                if ("Verified" == h) var i = {
+                    iconUrl: "img/pin_green.png",
+                    iconSize: [ 38, 45 ],
+                    shadowSize: [ 50, 64 ],
+                    iconAnchor: [ 22, 94 ],
+                    shadowAnchor: [ 4, 62 ],
+                    popupAnchor: [ -3, -76 ]
+                };
+                b.markers.push({
+                    lat: Number(f[g].latitude),
+                    lng: Number(f[g].longitude),
+                    icon: i,
+                    focus: true,
+                    message: f[g].tickitSubject
+                });
+            }
+            var j = f.length / 2;
+            j = parseInt(j);
+            console.log(j);
+            b.berlin = {
+                lat: Number(f[j].latitude),
+                lng: Number(f[j].longitude),
+                zoom: 12
+            };
+        });
+        e.error(function(a, b, c, d) {
+            console.log(JSON.stringify(a));
+        });
+    }
+    g();
+    b.showMoreLocation = function() {
+        f += 5;
+        g();
+    };
+    angular.extend(b, {
+        berlin: {},
+        markers: {},
+        layers: {
+            baselayers: {
+                osm: {
+                    name: "OpenStreetMap",
+                    url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    type: "xyz"
                 }
             }
-        );
- }
-	userDetail();
-	var deviceContactEmail = [];
-	var whamiUser = [];
-	var nonWhamiUser = [];
-	
-	$scope.friends = friendlist.getList();
-		function userDetail(){
-		var whamiUserdetail = [];
-		$scope.friends = friendlist.getList();	
-	     var friendcheck = $scope.friends;
-		 
-		 var emailId = JSON.parse(localStorage.getItem("user")).emailId; 
-		 		
-		   angular.forEach(friendcheck, function(userValue) {
-		   	var emailId = JSON.parse(localStorage.getItem("user")).emailId;
-		   	console.log(userValue.emailId);
-		   		if(emailId === userValue.emailId){
-		   			whamiUserdetail.push(userValue);
-		   		}
-		   		$scope.whamiUserdetail = whamiUserdetail;
-		   })
-		   }
-	$scope.showLocation = function(userId){
-	alert(userId);
-	$scope.$broadcast('map:userId',userId );
-	$state.transitionTo('tabs.map'); 
-	}
-	var deviceContact;
-	var options = { "fields":["emails", "phoneNumbers", "name"],"multiple":true};
-				$cordovaContacts.find(options).then(function(result) {
-					console.log(JSON.stringify(result));
-				      $scope.phoneContact = result;
-				      deviceContact = $scope.phoneContact;
-				         emailCompare();
-				       
-				       
-				    }, function(err) {
-				      // Contact error
-				      console.log(err);
-				    });
-				    
-	
-  function emailCompare(){
-	  	var friendemail = $scope.friends;
-	    var deviceContactEmail =  deviceContact;
-	    //console.log(JSON.stringify(deviceContactEmail));
-	    angular.forEach(deviceContactEmail, function(phonevalue) {
-                    angular.forEach(friendemail, function(value) {
-                        if (phonevalue.emails) {
-                        	var phoneLowerCase = (phonevalue.emails[0].value).toLowerCase(); 
-                          	var friendLowerCase = (value.emailId).toLowerCase();
-                            if (phoneLowerCase === friendLowerCase) {
-                                console.log(phonevalue.emails[0].value);
-                                value.firstName = phonevalue.name.givenName;
-                                value.lastName = phonevalue.name.familyName;
-                                whamiUser.push(value);
-                                deviceContactEmail = jQuery.grep(deviceContactEmail, function(value) {
-							           return value != phonevalue;
-							         });
-
-                            }
-                        }
-
-                    })
-                })
-
-	    //$scope.noFriends = false;
-	    $scope.nonWhamiUser = deviceContactEmail;
-	    $scope.whamiUser = whamiUser;
-	    
-		}	
-
-		$scope.doRefresh = function() {
-      
-      console.log('Refreshing!');
-      $timeout( function() {
-        //simulate async response
-       
-      $state.go($state.$current, null, { reload: true });  
-      
-        $scope.$broadcast('scroll.refreshComplete');
-      
-      }, 1000);
-        
-    };
-		
-		$scope.selectFriend = function() {
-        $state.transitionTo('tabs.selectFriend');
-         }      
-	   $scope.settingPage = function() {
-	     $state.transitionTo('tabs.setting');
-	   }     
-
-	   $scope.inviteFrnd = function() {
-   
-     $state.transitionTo('tabs.inviteFriend');
-   }
-	  $scope.backTofriend = function() {
-   
-     $state.transitionTo('tabs.friendlist');
-   } 
-   $scope.toHome = function() {
-   
-     $state.transitionTo('tabs.home');
-   }  
-			    
-});
-
+        },
+        defaults: {
+            scrollWheelZoom: false
+        }
+    });
+} ]);
