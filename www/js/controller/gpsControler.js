@@ -41,7 +41,7 @@ $scope.colors = [
 	     savedDates['endDate'] = 	eD ;
 	     savedDates['startDate'] = sD ;
 	    //alert("22");
-	    $rootScope.$broadcast("gpsSettingsChanged", savedDates);
+	   $rootScope.$broadcast("gpsSettingsChanged", savedDates);
 	    geoLocationService.stop();
 	 }
    
