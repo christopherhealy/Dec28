@@ -397,7 +397,6 @@ $scope.takePicture = function() {
                               
                                    options.params =  params;
 
-
                                     console.log(JSON.stringify(options));
 
                                     var ft = new FileTransfer();

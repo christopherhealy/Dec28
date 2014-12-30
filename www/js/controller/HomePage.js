@@ -14,7 +14,7 @@
     }
 
     var _recipientAuto = "Auto Location Observation";
-    var _recipientManual = "Manual Location Observation";
+   
     var _tickitType = "20";
 
     var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
