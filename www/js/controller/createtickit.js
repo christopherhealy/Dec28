@@ -1,365 +1,547 @@
-/* createtickit.js Dec 30 2014
-/  notes:
-*/
 
-var flagNetwork = 0;
+var flagNetwork = 0 ;
 
-ionicApp.controller("createTickitCtrl", function(a, b, c, d, e, f, g, h, i, j, k, l) {
-    p();
-    a.statussucess = false;
-    a.stausFail = false;
-    function m() {
-        var b = new Date();
-        var c = b.getHours();
-        var d = b.getMinutes();
-        var e = b.getSeconds();
-        if (c < 10) c = "0" + c;
-        if (d < 10) d = "0" + d;
-        if (e < 10) e = "0" + e;
-        var f = c + ":" + d + ":" + e;
-        a.statusTime = f;
-    }
-    a.backToHome = function() {
-        d.transitionTo("tabs.home");
-    };
-    var n = localStorage.getItem("whamiAuto");
-    if (null == n || "true" == n) {
-        localStorage.removeItem("whamiAuto");
-        localStorage.setItem("whamiAuto", true);
-        o();
-    }
-    function o() {
-        a.main.pushNotification = {
-            checked: true
-        };
-        i.start();
-        l.startTracking();
-    }
-    a.main.pushNotificationChange = function() {
-        var a = localStorage.getItem("whamiAuto");
-        if ("true" == a) {
-            i.stop();
-            l.stopTracking();
-            localStorage.removeItem("whamiAuto");
-            localStorage.setItem("whamiAuto", false);
-        } else {
-            i.start();
-            l.startTracking();
-            localStorage.setItem("whamiAuto", true);
-        }
-    };
-    a.$on("deviceReady", function(b, c) {
-        a.wifiAvailable = false;
-        a.noNetwork = false;
-        a.twoG = false;
-        a.threeG = false;
-        a.fourG = false;
-        a.ethernet = false;
-        a.unknown = false;
-        var e = k.getNetwork();
-        var f = k.isOnline();
-        var g = k.isOffline();
-        var h = {};
-        h[Connection.UNKNOWN] = "unknown";
-        h[Connection.ETHERNET] = "ethernet";
-        h[Connection.WIFI] = "wiFi";
-        h[Connection.CELL_2G] = "twoG";
-        h[Connection.CELL_3G] = "threeG";
-        h[Connection.CELL_4G] = "fourG";
-        h[Connection.NONE] = "noNetwork";
-        document.addEventListener("offline", j, false);
-        document.addEventListener("online", l, true);
-        var i = h[e];
-        if ("wiFi" == i) a.wifiAvailable = true;
-        if ("noNetwork" == i) a.noNetwork = true;
-        if ("twoG" == i) a.twoG = true;
-        if ("threeG" == i) a.threeG = true;
-        if ("fourG" == i) a.fourG = true;
-        if ("ethernet" == i) a.ethernet = true;
-        if ("unknown" == i) a.unknown = true;
-        function j() {
-            flagNetwork = 1;
-            d.go(d.$current, null, {
-                reload: true
-            });
-        }
-        function l() {
-            flagNetwork = 2;
-            d.go(d.$current, null, {
-                reload: true
-            });
-        }
-    });
-    function p() {
-        var b = localStorage.getItem("networkSet");
-        if ("true" == b) {
-            a.wifiAvailable = false;
-            a.noNetwork = false;
-            a.twoG = false;
-            a.threeG = false;
-            a.fourG = false;
-            a.ethernet = false;
-            a.unknown = false;
-            var c = k.getNetwork();
-            var e = k.isOnline();
-            var f = k.isOffline();
-            var g = {};
-            g[Connection.UNKNOWN] = "unknown";
-            g[Connection.ETHERNET] = "ethernet";
-            g[Connection.WIFI] = "wiFi";
-            g[Connection.CELL_2G] = "twoG";
-            g[Connection.CELL_3G] = "threeG";
-            g[Connection.CELL_4G] = "fourG";
-            g[Connection.NONE] = "noNetwork";
-            var h = g[c];
-            document.addEventListener("offline", i, false);
-            document.addEventListener("online", j, true);
-            if ("wiFi" == h) a.wifiAvailable = true;
-            if ("noNetwork" == h) a.noNetwork = true;
-            if ("twoG" == h) a.twoG = true;
-            if ("threeG" == h) a.threeG = true;
-            if ("fourG" == h) a.fourG = true;
-            if ("ethernet" == h) a.ethernet = true;
-            if ("unknown" == h) a.unknown = true;
-            function i() {
-                flagNetwork = 1;
-                d.go(d.$current, null, {
-                    reload: true
-                });
+ionicApp.controller('createTickitCtrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,$cordovaCamera,friendlist,geoLocationService,$cordovaSocialSharing,$cordovaNetwork,backGeoLocationService) {
+ checkNetwork();
+ 
+ $scope.statussucess = false;
+ $scope.stausFail = false;
+
+function statusTimeDisplay(){
+ var dd1 = new Date();
+      var currentHours1 = dd1.getHours();
+      var currentMin1 = dd1.getMinutes();
+      var currentSec1 = dd1.getSeconds();
+
+      if (currentHours1 < 10) {
+                currentHours1 = "0" + currentHours1;
             }
-            function j() {
-                flagNetwork = 2;
-                d.go(d.$current, null, {
-                    reload: true
-                });
+      if (currentMin1 < 10) {
+                currentMin1 = "0" + currentMin1;
             }
+      if (currentSec1 < 10) {
+                currentSec1 = "0" + currentSec1;
+            }      
+    var tickittime1 = currentHours1+":"+currentMin1+":"+currentSec1;
+
+    $scope.statusTime = tickittime1;
+}
+
+$scope.backToHome = function(){
+  $state.transitionTo('tabs.home'); 
+}
+
+
+ var whamiAuto = localStorage.getItem("whamiAuto");
+ //alert("whamiAuto = " + whamiAuto);
+ if(whamiAuto == null || whamiAuto == "true") {
+  localStorage.removeItem("whamiAuto");
+  localStorage.setItem("whamiAuto", true);
+  //alert("inside if");
+  autoWhami();
+ }
+ 
+ function autoWhami(){
+  // alert("inside autoWhami");
+    $scope.main.pushNotification = { checked: true };
+    geoLocationService.start();
+     backGeoLocationService.startTracking();
+   // alert("inside autoWhami after");
+  }  
+
+
+
+  $scope.main.pushNotificationChange = function(){
+
+    
+    var whamiAuto = localStorage.getItem("whamiAuto");
+   // alert("changed " + whamiAuto);
+    if(whamiAuto == "true") {
+     
+      geoLocationService.stop();
+       backGeoLocationService.stopTracking();
+      //alert("inside if")
+      localStorage.removeItem("whamiAuto");
+      localStorage.setItem("whamiAuto", false);
+      //localStorage.setItem("whamiAuto", true);
+    } else {
+     // alert("inside else");
+       geoLocationService.start();
+       backGeoLocationService.startTracking();
+      localStorage.setItem("whamiAuto", true);
+    }
+    
+  } 
+ 
+ $scope.$on('deviceReady', function(event, args) {
+   //alert('deviceReady');
+           $scope.wifiAvailable = false; 
+           $scope.noNetwork = false;
+           $scope.twoG = false; 
+           $scope.threeG = false;
+           $scope.fourG = false;
+           $scope.ethernet = false;
+           $scope.unknown = false;    
+        var type = $cordovaNetwork.getNetwork();
+
+        var isOnline = $cordovaNetwork.isOnline();
+          
+        var isOffline = $cordovaNetwork.isOffline();
+        
+        var states = {};
+        states[Connection.UNKNOWN]  = 'unknown';
+        states[Connection.ETHERNET] = 'ethernet';
+        states[Connection.WIFI]     = 'wiFi';
+        states[Connection.CELL_2G]  = 'twoG';
+        states[Connection.CELL_3G]  = 'threeG';
+        states[Connection.CELL_4G]  = 'fourG';
+        states[Connection.NONE]     = 'noNetwork';
+        document.addEventListener("offline", onOffline, false);
+        document.addEventListener("online", onOnline, true);
+        var networkType = states[type];
+        //alert(type);
+        if(networkType == "wiFi"){
+          $scope.wifiAvailable = true;  
         }
-        localStorage.removeItem("networkSet");
-    }
-    if (1 == flagNetwork) {
-        a.wifiAvailable = false;
-        a.noNetwork = true;
-        a.twoG = false;
-        a.threeG = false;
-        a.fourG = false;
-        a.ethernet = false;
-        a.unknown = false;
-    }
-    if (2 == flagNetwork) {
-        a.wifiAvailable = false;
-        a.noNetwork = false;
-        a.twoG = false;
-        a.threeG = false;
-        a.fourG = false;
-        a.ethernet = false;
-        a.unknown = false;
-        var q = k.getNetwork();
-        var r = {};
-        r[Connection.UNKNOWN] = "unknown";
-        r[Connection.ETHERNET] = "ethernet";
-        r[Connection.WIFI] = "wiFi";
-        r[Connection.CELL_2G] = "twoG";
-        r[Connection.CELL_3G] = "threeG";
-        r[Connection.CELL_4G] = "fourG";
-        r[Connection.NONE] = "noNetwork";
-        var s = r[q];
-        if ("wiFi" == s) a.wifiAvailable = true;
-        if ("noNetwork" == s) a.noNetwork = true;
-        if ("twoG" == s) a.twoG = true;
-        if ("threeG" == s) a.threeG = true;
-        if ("fourG" == s) a.fourG = true;
-        if ("ethernet" == s) a.ethernet = true;
-        if ("unknown" == s) a.unknown = true;
-    }
-    var t = _baseUrl + "userService/" + "333234567" + "/saveDeviceAppId";
-    var u;
-    if (localStorage.getItem("deviceAppId")) u = localStorage.getItem("deviceAppId");
-    var v = JSON.parse(localStorage.getItem("user")).userId;
-    var w = {};
-    w["userId"] = v;
-    w["deviceAppId"] = u;
-    w["deviceType"] = "iphone";
-    console.log(JSON.stringify(w));
-    var x = c.post(t, w, {
-        cache: false
-    });
-    x.success(function(a, b, c, d) {
-        console.log(JSON.stringify(a));
-    });
-    x.error(function(a, b, c, d) {
-        console.log(JSON.stringify(a));
-    });
-    a.profileData = JSON.parse(localStorage.getItem("user"));
-    a.imageAvailable = false;
-    a.takePicture = function() {
-        var b = {
-            quality: 100,
-            destinationType: Camera.DestinationType.FILE_URI,
-            sourceType: Camera.PictureSourceType.CAMERA,
-            encodingType: Camera.EncodingType.JPEG,
-            popoverOptions: CameraPopoverOptions,
-            saveToPhotoAlbum: true,
-            correctOrientation: true
-        };
-        var c;
-        g.getPicture(b).then(function(b) {
-            var d = document.getElementById("imagetaken");
-            d.src = b;
-            a.imageAvailable = true;
-            c = b;
-            a.shareImage = function() {
-                j.shareViaTwitter("message", b, null).then(function(a) {
-                    console.log(a);
-                }, function(a) {
-                    console.log(a);
-                });
-            };
-            a.sendImage = function(c) {
-                var d = k.getNetwork();
-                if ("none" == d) alert("No Network Connection"); else {
-                    var f = c;
-                    var g = document.getElementById("subject").value;
-                    var h = document.getElementById("msgbody").value;
-                    var i = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-                    var j = new Date();
-                    var l = j.getHours();
-                    var m = j.getMinutes();
-                    var n = j.getSeconds();
-                    if (l < 10) l = "0" + l;
-                    if (m < 10) m = "0" + m;
-                    if (n < 10) n = "0" + n;
-                    var o = l + ":" + m + ":" + n;
-                    if ("" == g) g = o;
-                    if ("" == h) h = i;
-                    e.getCurrentPosition({
-                        maximumAge: 7e3,
-                        timeout: 15e3,
-                        enableHighAccuracy: true
-                    }).then(function(c) {
-                        console.log("Your Locations ");
-                        console.log("Your latitude is " + c.coords.latitude);
-                        var d = c.coords.latitude + ";" + c.coords.longitude;
-                        var e = new FileUploadOptions();
-                        e.fileKey = "tickitFile";
-                        e.fileName = b.substr(b.lastIndexOf("/") + 1);
-                        e.contentType = "multipart/form-data";
-                        e.chunkedMode = false;
-                        e.mimeType = "image/jpeg";
-                        e.httpMethod = "POST";
-                        e.headers = {
-                            Connection: "close"
-                        };
-                        var i = JSON.parse(localStorage.getItem("user")).userId;
-                        var j = JSON.parse(localStorage.getItem("user")).apiKey;
-                        var k = _baseUrl + "tickitService/" + j + "/createTickit";
-                        console.log(k);
-                        var l = new Object();
-                        l.ownerId = i;
-                        l.tickitStatus = f;
-                        l.tickitType = 20;
-                        l.recipient = MyRecipientHolderStringManual + "-cs";
-                        l.subject = g;
-                        l.ip = MyCurrentIPAddress;
-                        l.msgBody = h;
-                        l.gps = d;
-                        e.params = l;
-                        console.log(JSON.stringify(e));
-                        var m = new FileTransfer();
-                        a.$parent.showLoader();
-                        m.upload(b, k, y, z, e);
-                    }, function(a) {
-                        console.log(a);
-                    });
-                }
-            };
-        }, function(a) {});
-    };
-    a.deleteImage = function() {
-        a.imageAvailable = false;
-    };
-    a.ticketupload = function(b) {
-        var c = k.getNetwork();
-        if ("none" == c) alert("No Network Connection"); else {
-            var d = b;
-            var f = document.getElementById("subject").value;
-            var g = document.getElementById("msgbody").value;
-            var h = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-            var i = new Date();
-            var j = i.getHours();
-            var l = i.getMinutes();
-            var n = i.getSeconds();
-            if (j < 10) j = "0" + j;
-            if (l < 10) l = "0" + l;
-            if (n < 10) n = "0" + n;
-            var o = j + ":" + l + ":" + n;
-            var p = 0;
-            if ("" == f) f = o;
-            if ("" == g) g = h;
-            e.getCurrentPosition({
-                desiredAccuracy: 10,
-                maxWait: 15e3,
-                enableHighAccuracy: true
-            }).then(function(b) {
-                console.log("Your latitude is " + b.coords.latitude);
-                console.log("Your latitude is " + b.coords.longitude);
-                var c = b.coords.latitude;
-                var e = b.coords.longitude;
-                var h = JSON.parse(localStorage.getItem("user")).userId;
-                var i = JSON.parse(localStorage.getItem("user")).apiKey;
-                var j = _baseUrl + "tickitService/" + i + "/createTickit";
-                var k = new FormData();
-                k.append("ownerId", h);
-                k.append("tickitStatus", d);
-                k.append("msgBody", g);
-                k.append("tickitType", "20");
-                k.append("recipient", MyRecipientHolderStringManual);
-                k.append("subject", f);
-                k.append("ip", MyCurrentIPAddress);
-                k.append("gps", c + ";" + e);
-                a.$parent.showLoader();
-                $.ajax({
-                    url: j,
-                    data: k,
-                    dataType: "text",
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    success: function(b) {
-                        m();
-                        a.$parent.hideLoader();
-                        a.statussucess = true;
-                        a.imageAvailable = false;
-                        a.main.sub = "";
-                        a.main.msg = "";
-                        console.log(JSON.stringify(b));
-                    },
-                    error: function(b) {
-                        a.$parent.hideLoader();
-                        a.stausFail = true;
-                        console.log(JSON.stringify(b));
-                    }
-                });
-            }, function(a) {
-                console.log(a);
-            });
+         if(networkType == "noNetwork"){
+          $scope.noNetwork = true;  
         }
-    };
-    function y(b) {
-        m();
-        a.statussucess = true;
-        a.$parent.hideLoader();
-        a.imageAvailable = false;
-        a.main.sub = "";
-        a.main.msg = "";
-        console.log("Code = " + b.responseCode);
-        console.log("Response = " + b.response);
-        console.log("Sent = " + b.bytesSent);
-        console.log(b.response);
-    }
-    function z(b) {
-        a.$parent.hideLoader();
-        a.stausFail = true;
-        alert("An error has occurred: Code = " + b.code);
-        console.log(JSON.stringify(b));
-    }
+
+        if(networkType == "twoG"){
+          $scope.twoG = true;  
+        }
+        if(networkType == "threeG"){
+          $scope.threeG = true;  
+        }
+        if(networkType == "fourG"){
+          $scope.fourG = true;  
+        }
+        if(networkType == "ethernet"){
+          $scope.ethernet = true;  
+        }
+        if(networkType == "unknown"){
+          $scope.unknown = true;  
+        }
+        function onOffline() {
+         
+          flagNetwork = 1;
+       $state.go($state.$current, null, { reload: true });  
+        }
+
+        function onOnline() {
+           flagNetwork = 2;
+           $state.go($state.$current, null, { reload: true });  
+         }
+
+
+      
 });
+
+
+ function checkNetwork(){
+  var networkSet = localStorage.getItem("networkSet"); 
+ //alert(networkSet);
+      if(networkSet == "true"){ 
+           $scope.wifiAvailable = false; 
+           $scope.noNetwork = false;
+           $scope.twoG = false; 
+           $scope.threeG = false;
+           $scope.fourG = false;
+           $scope.ethernet = false;
+           $scope.unknown = false;    
+        var type = $cordovaNetwork.getNetwork();
+
+        var isOnline = $cordovaNetwork.isOnline();
+          
+        var isOffline = $cordovaNetwork.isOffline();
+        
+        var states = {};
+        states[Connection.UNKNOWN]  = 'unknown';
+        states[Connection.ETHERNET] = 'ethernet';
+        states[Connection.WIFI]     = 'wiFi';
+        states[Connection.CELL_2G]  = 'twoG';
+        states[Connection.CELL_3G]  = 'threeG';
+        states[Connection.CELL_4G]  = 'fourG';
+        states[Connection.NONE]     = 'noNetwork';
+        var networkType = states[type];
+        document.addEventListener("offline", onOffline, false);
+        document.addEventListener("online", onOnline, true);
+        if(networkType == "wiFi"){
+          $scope.wifiAvailable = true;  
+        }
+         if(networkType == "noNetwork"){
+          $scope.noNetwork = true;  
+        }
+
+        if(networkType == "twoG"){
+          $scope.twoG = true;  
+        }
+        if(networkType == "threeG"){
+          $scope.threeG = true;  
+        }
+        if(networkType == "fourG"){
+          $scope.fourG = true;  
+        }
+        if(networkType == "ethernet"){
+          $scope.ethernet = true;  
+        }
+        if(networkType == "unknown"){
+          $scope.unknown = true;  
+        }
+
+        function onOffline() {
+         
+          flagNetwork = 1;
+       $state.go($state.$current, null, { reload: true });  
+        }
+
+        function onOnline() {
+           flagNetwork = 2;
+           $state.go($state.$current, null, { reload: true });  
+         }
+}
+localStorage.removeItem("networkSet");
+}        
+
+if(flagNetwork == 1){
+   $scope.wifiAvailable = false; 
+   $scope.noNetwork = true;
+   $scope.twoG = false; 
+   $scope.threeG = false;
+   $scope.fourG = false;
+   $scope.ethernet = false;
+   $scope.unknown = false; 
+}
+
+if(flagNetwork == 2){
+           $scope.wifiAvailable = false; 
+           $scope.noNetwork = false;
+           $scope.twoG = false; 
+           $scope.threeG = false;
+           $scope.fourG = false;
+           $scope.ethernet = false;
+           $scope.unknown = false;   
+        var type1 = $cordovaNetwork.getNetwork();
+        var states1 = {};
+        states1[Connection.UNKNOWN]  = 'unknown';
+        states1[Connection.ETHERNET] = 'ethernet';
+        states1[Connection.WIFI]     = 'wiFi';
+        states1[Connection.CELL_2G]  = 'twoG';
+        states1[Connection.CELL_3G]  = 'threeG';
+        states1[Connection.CELL_4G]  = 'fourG';
+        states1[Connection.NONE]     = 'noNetwork';
+        //document.addEventListener("offline", onOffline, false);
+        //document.addEventListener("online", onOnline, true);
+        var networkType1 = states1[type1];
+        
+        if(networkType1 == "wiFi"){
+          $scope.wifiAvailable = true;  
+        }
+         if(networkType1 == "noNetwork"){
+          $scope.noNetwork = true;  
+        }
+
+        if(networkType1 == "twoG"){
+          $scope.twoG = true;  
+        }
+        if(networkType1 == "threeG"){
+          $scope.threeG = true;  
+        }
+        if(networkType1 == "fourG"){
+          $scope.fourG = true;  
+        }
+        if(networkType1 == "ethernet"){
+          $scope.ethernet = true;  
+        }
+        if(networkType1 == "unknown"){
+          $scope.unknown = true;  
+        }
+
+}
+
+
+
+ var sendMobileDataUrl = _baseUrl + "userService/" + "333234567" +"/saveDeviceAppId";
+ var deviceAppId;
+ if(localStorage.getItem("deviceAppId")){
+  deviceAppId = localStorage.getItem("deviceAppId");
+  
+ }; 
+
+ var userId = JSON.parse(localStorage.getItem("user")).userId; 
+        var mobileData = {};
+            mobileData['userId'] = userId;
+            mobileData['deviceAppId'] = deviceAppId;
+            mobileData['deviceType'] = "iphone";
+            console.log(JSON.stringify(mobileData));
+
+  var  responsePromise = $http.post(sendMobileDataUrl,mobileData, { cache: false });
+
+        responsePromise.success(function(data, status, headers, config) {
+          console.log(JSON.stringify(data));
+
+       })
+       
+       responsePromise.error(function(data, status, headers, config) {
+        console.log(JSON.stringify(data)); 
+
+       })
+    
+$scope.profileData = JSON.parse(localStorage.getItem("user"));
+$scope.imageAvailable = false;
+$scope.takePicture = function() {
+//	alert("take it");
+    var options = { 
+        quality : 100, 
+        destinationType : Camera.DestinationType.FILE_URI, 
+        sourceType : Camera.PictureSourceType.CAMERA, 
+        encodingType: Camera.EncodingType.JPEG,
+        //targetWidth: 100,
+        //targetHeight: 100,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: true,
+        correctOrientation: true
+    };
+   var imagep;
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+       var image = document.getElementById('imagetaken');
+        image.src = imageData;
+       $scope.imageAvailable = true;
+       imagep = imageData;
+
+       $scope.shareImage = function(){
+
+          $cordovaSocialSharing.shareViaTwitter("message", imageData, null).then(function(result) {
+
+                console.log(result);
+              // Success! 
+          }, function(err) {
+            console.log(err);
+              // An error occured. Show a message to the user
+          });
+
+
+       }
+       
+					
+      $scope.sendImage = function(tickitNumber){
+      var type = $cordovaNetwork.getNetwork();
+      if(type == "none" ){
+          alert("No Network Connection");
+      }else{
+      var tickitStatus = tickitNumber;
+      var subject = document.getElementById("subject").value;
+      var msgBody = document.getElementById("msgbody").value;
+      var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
+      var dd = new Date();
+      var currentHours = dd.getHours();
+      var currentMin = dd.getMinutes();
+      var currentSec = dd.getSeconds();
+
+      if (currentHours < 10) {
+                currentHours = "0" + currentHours;
+            }
+      if (currentMin < 10) {
+                currentMin = "0" + currentMin;
+            }
+      if (currentSec < 10) {
+                currentSec = "0" + currentSec;
+            }      
+    var tickittime = currentHours+":"+currentMin+":"+currentSec;
+    
+      if(subject == ""){
+        subject = tickittime;
+         }
+          
+         if(msgBody == ""){
+        msgBody = userName;
+        } 
+
+
+        $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
+                         console.log("Your Locations ");
+                             console.log("Your latitude is " + position.coords.latitude);
+                             var locationCord = position.coords.latitude + ";" + position.coords.longitude;
+                             var options = new FileUploadOptions();
+                                  options.fileKey="tickitFile";
+                                  options.fileName=imageData.substr(imageData.lastIndexOf('/')+1);
+                                 // options.fileName="Ashish";
+                                  //options.mimeType = "multipart/form-data";
+                                  options.contentType = "multipart/form-data";
+                                  options.chunkedMode = false;
+                                  options.mimeType="image/jpeg";
+                                  options.httpMethod="POST";
+                                  
+                                  options.headers = {
+                                            Connection: "close"
+                                       };
+
+                                  var userId = JSON.parse(localStorage.getItem("user")).userId;            
+                                  
+                                  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
+                                  
+                                  
+                                  var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
+              
+                                  console.log(manualTickitUrl);
+
+                                   var params = new Object();
+                                                  params.ownerId = userId;
+                                                  params.tickitStatus = tickitStatus;
+                                                  params.tickitType = 20;
+                                                  params.recipient = MyRecipientHolderStringManual + "-cs";
+                                                  params.subject = subject;
+                                                  params.ip = MyCurrentIPAddress;
+                                                  //params.tickitCustomId = "55555";
+                                                  //params.parentId = "null";
+                                                  params.msgBody = msgBody;
+                                                  params.gps =  locationCord;
+                                                  
+                                                  //params.startDate = null;
+                                                  //params.endDate = null;
+                                                  
+                              
+                                   options.params =  params;
+
+
+                                    console.log(JSON.stringify(options));
+
+                                    var ft = new FileTransfer();
+                                    $scope.$parent.showLoader();
+                                    ft.upload(imageData, manualTickitUrl, win, fail, options);
+                                   
+                                        
+                                        }, function(err) {
+                                          console.log(err);
+                                        });
+      }
+	                   }
+	                   
+            }, function(err) {
+            // An error occured. Show a message to the user
+          });
+  }
+  
+  $scope.deleteImage = function(){
+	      $scope.imageAvailable = false;  
+	}
+	
+	
+	$scope.ticketupload = function(tickitNumber){
+
+      var type = $cordovaNetwork.getNetwork();
+      if(type == "none" ){
+          alert("No Network Connection");
+      }else{
+         // alert("else");
+          var tickitStatus = tickitNumber;
+      var subject = document.getElementById("subject").value;
+      var msgBody = document.getElementById("msgbody").value;
+      var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
+      var dd = new Date();
+      var currentHours = dd.getHours();
+      var currentMin = dd.getMinutes();
+      var currentSec = dd.getSeconds();
+
+      if (currentHours < 10) {
+                currentHours = "0" + currentHours;
+            }
+      if (currentMin < 10) {
+                currentMin = "0" + currentMin;
+            }
+      if (currentSec < 10) {
+                currentSec = "0" + currentSec;
+            }      
+    var tickittime = currentHours+":"+currentMin+":"+currentSec;
+      var flag = 0;
+      
+      if(subject == ""){
+        subject = tickittime;
+         }
+       
+         if(msgBody == ""){
+        msgBody = userName;
+        } 
+     
+    
+      $cordovaGeolocation.getCurrentPosition({desiredAccuracy:10, maxWait:15000, enableHighAccuracy: true}).then(function(position) {
+                   console.log("Your latitude is " + position.coords.latitude);
+                   console.log("Your latitude is " + position.coords.longitude);
+                    var latitudeManual = position.coords.latitude;
+                    var longitudeManual = position.coords.longitude;
+                  // Position here: position.coords.latitude, position.coords.longitude
+    var userId = JSON.parse(localStorage.getItem("user")).userId;           
+    var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
+    var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
+    
+    var form = new FormData();
+    
+           form.append('ownerId' , userId);
+           form.append('tickitStatus' , tickitStatus);
+           form.append('msgBody' , msgBody);
+           form.append('tickitType' , "20");
+           form.append('recipient' , MyRecipientHolderStringManual);
+           form.append('subject' , subject);
+           form.append('ip' , MyCurrentIPAddress);
+           form.append('gps' , latitudeManual + ";" + longitudeManual);
+           $scope.$parent.showLoader();
+             $.ajax({
+            url: manualTickitUrl,
+            data: form,
+            dataType: 'text',
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+              statusTimeDisplay();
+              $scope.$parent.hideLoader();
+            $scope.statussucess = true;
+            $scope.imageAvailable = false;  
+            $scope.main.sub = "";
+            $scope.main.msg = "";
+            //$state.transitionTo('tabs.ticket');    
+            console.log(JSON.stringify(data));
+            },
+            error:function(data){
+              $scope.$parent.hideLoader();
+              $scope.stausFail = true;
+              console.log(JSON.stringify(data));
+              }
+            });
+      }, function(err) {
+        console.log(err);
+      });
+      
+      }
+
+		
+		}
+	
+	
+	
+	
+  function win(r) {
+				    statusTimeDisplay();
+	          $scope.statussucess = true;
+            $scope.$parent.hideLoader();
+            $scope.imageAvailable = false;  
+            $scope.main.sub = "";
+            $scope.main.msg = "";
+	          //$state.transitionTo('tabs.ticket');    
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+            console.log(r.response);
+          //  getUploadedImage();
+        }
+
+        function fail(error) {
+            $scope.$parent.hideLoader();
+            $scope.stausFail = true;
+            alert("An error has occurred: Code = " + error.code);
+            console.log(JSON.stringify(error));
+        }
+      
+
+});
+ 
