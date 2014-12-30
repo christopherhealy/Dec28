@@ -1,3 +1,5 @@
+var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
+
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {
 		//alert("clicked");
