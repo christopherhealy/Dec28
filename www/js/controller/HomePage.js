@@ -3,33 +3,14 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		//alert("clicked");
 	 $state.transitionTo('tabs.home');
 	}
-
-    var MyCurrentIPAddress = "not.available'; //default
-
-   if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
-    {
-      MyCurrentIPAddress =$_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
-    {
-      MyCurrentIPAddress =$_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    else
-    {
-      MyCurrentIPAddress =$_SERVER['REMOTE_ADDR'];
-    }
-
-    var MyRecipientHolderStringManual = "Whami Location Observation - manual";
-    var MyRecipientHolderStringAuto = "Whami Location Observation - auto";
-
-   
+    
     var TimeInterval = localStorage.getItem("timeInterVal");
 	 alert(TimeInterval);
 	if(TimeInterval == null){
 		//alert("ay");
 		localStorage.setItem("timeInterVal",300000);
 		}
-
+    
     $scope.profileData = JSON.parse(localStorage.getItem("user"));
 	var gpsAuto = localStorage.getItem("gpsAuto");
 	    //alert(gpsAuto);
@@ -41,8 +22,6 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 			}else{
 				 geoLocationService.stop();
 				}
-
-        
 
 	$scope.createTickit = function() {
 		//alert("clicked");
@@ -66,9 +45,9 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
            form.append('ownerId' , userId);
            form.append('tickitStatus' , "7");
            form.append('tickitType' , "11");
-           form.append('recipient' , MyRecipientHolderStringManual );
+           form.append('recipient' , "chris@abc.com");
            form.append('subject' , "Create ticket");
-           form.append('ip' , MyCurrentIPAddress);
+           form.append('ip' , "192.168.1.217");
            form.append('gps' , latitudeManual + ";" + longitudeManual);
              $.ajax({
 						url: manualTickitUrl,
