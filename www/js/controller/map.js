@@ -23,72 +23,72 @@ function showMapLocation(){
                  var tickitStatus = latLonglist[i].tickitStatusModel.label;
                  console.log(tickitStatus);
 
-                      if (tickitStatus == 'Completed') {
-                      
-                               var coloredicon = {
-                                iconUrl: 'img/pin_blue.png',
-                                iconSize: [38, 45], // size of the icon
-                                shadowSize: [50, 64], // size of the shadow
-                                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                                shadowAnchor: [4, 62], // the same for the shadow
-                                popupAnchor: [-3, -76]
-                               }
-                             }
-                      if(tickitStatus == 'rejected'){
-                        
-                          var coloredicon = {
-                                iconUrl: 'img/pin_red.png',
-                                iconSize: [38, 45], // size of the icon
-                                shadowSize: [50, 64], // size of the shadow
-                                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                                shadowAnchor: [4, 62], // the same for the shadow
-                                popupAnchor: [-3, -76]
-                               }
-
-                      } 
-                      if(tickitStatus == 'Unassigned'){
-                            var coloredicon = {
-                                iconUrl: 'img/pin_yellow.png',
-                                iconSize: [38, 45], // size of the icon
-                                shadowSize: [50, 64], // size of the shadow
-                                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                                shadowAnchor: [4, 62], // the same for the shadow
-                                popupAnchor: [-3, -76]
-                               }
-                       
-                      }   
-                      if(tickitStatus == 'Verified'){
-                        var coloredicon = {
-                                iconUrl: 'img/pin_green.png',
-                                iconSize: [38, 45], // size of the icon
-                                shadowSize: [50, 64], // size of the shadow
-                                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                                shadowAnchor: [4, 62], // the same for the shadow
-                                popupAnchor: [-3, -76]
-                               }
-                          
-                        
-                      } 
-                           
-                       $scope.markers.push({
-                       
-                            lat:Number(latLonglist[i].latitude) ,
-                            lng:Number(latLonglist[i].longitude) ,
-                            icon:coloredicon,
-                             /*{
+                if (tickitStatus == 'Completed') {
+                  
+                  var coloredicon = {
+                    iconUrl: 'img/pin_blue.png',
+                    iconSize: [38, 45], // size of the icon
+                    shadowSize: [50, 64], // size of the shadow
+                    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62], // the same for the shadow
+                    popupAnchor: [-3, -76]
+                  }
+                  }
+                if(tickitStatus == 'rejected'){
+                  
+                  var coloredicon = {
+                    iconUrl: 'img/pin_red.png',
+                    iconSize: [38, 45], // size of the icon
+                    shadowSize: [50, 64], // size of the shadow
+                    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62], // the same for the shadow
+                    popupAnchor: [-3, -76]
+                  }
+                  
+                  } 
+                if(tickitStatus == 'Unassigned'){
+                  var coloredicon = {
+                    iconUrl: 'img/pin_yellow.png',
+                    iconSize: [38, 45], // size of the icon
+                    shadowSize: [50, 64], // size of the shadow
+                    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62], // the same for the shadow
+                    popupAnchor: [-3, -76]
+                  }
+                  
+                  }   
+                if(tickitStatus == 'Verified'){
+                  var coloredicon = {
+                    iconUrl: 'img/pin_green.png',
+                    iconSize: [38, 45], // size of the icon
+                    shadowSize: [50, 64], // size of the shadow
+                    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62], // the same for the shadow
+                    popupAnchor: [-3, -76]
+                  }
+                  
+                  
+                  } 
+                
+                $scope.markers.push({
+                  
+                  lat:Number(latLonglist[i].latitude) ,
+                  lng:Number(latLonglist[i].longitude) ,
+                  icon:coloredicon,
+                  /*{
                                 iconUrl: 'img/pin_red.png',
                                 iconSize: [35, 35],
                               },*/
-                            focus: true,
-                            message:latLonglist[i].tickitSubject
-                            /*label: {
+                  focus: true,
+                  message:latLonglist[i].tickitSubject
+                  /*label: {
                             message: "Hey",
                             options: {
                                 noHide: true
                                 }
                            }*/
-                       });
-                    
+                });
+                
 
               };
     var mapCenter = latLonglist.length / 2;

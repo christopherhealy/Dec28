@@ -4,7 +4,7 @@ ionicApp.controller('gpsControler', function($scope,$cordovaDialogs,$rootScope ,
 	var eDate = localStorage.getItem("endDate");
 	$scope.startDate = sDate;
 	$scope.endDate = eDate;
-    //alert(gg);
+        //alert(gg);
 
 
 $scope.colors = [
@@ -18,25 +18,25 @@ $scope.colors = [
 
  $scope.saveDates = function ( sD ,eD){
 
- 	      var timeInterVal  =  $('#timeInterVal').val();
-
- 	      localStorage.setItem("timeInterVal" , timeInterVal);
-
-	      if(  angular.isDefined(sD)){
-			   
-			   localStorage.setItem("startDate" , sD);
-			   
-			  
-			  } else {
-				  localStorage.setItem("startDate" , false);
-				  
-				  };
-		  if(  angular.isDefined(eD) ){			
-			localStorage.setItem("endDate" , eD);
-			}else {
-				
-				localStorage.setItem("endDate" , false);
-		  }
+   var timeInterVal  =  $('#timeInterVal').val();
+   
+   localStorage.setItem("timeInterVal" , timeInterVal);
+   
+   if(  angular.isDefined(sD)){
+     
+     localStorage.setItem("startDate" , sD);
+     
+     
+   } else {
+     localStorage.setItem("startDate" , false);
+     
+   };
+   if(  angular.isDefined(eD) ){			
+     localStorage.setItem("endDate" , eD);
+   } else {
+     
+     localStorage.setItem("endDate" , false);
+   }
 				
 	var savedDates = {};
 	     savedDates['endDate'] = 	eD ;
@@ -47,5 +47,4 @@ $scope.colors = [
 	 }
    
 });
-
 

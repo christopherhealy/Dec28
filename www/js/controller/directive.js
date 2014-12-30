@@ -8,86 +8,86 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 	        watchId = $interval(function () {
 	          //alert(TimeInterval);
 	          $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
-									 console.log("Your latitude is " + position.coords.latitude);
-									 console.log("Your latitude is " + position.coords.longitude);
-									// Position here: position.coords.latitude, position.coords.longitude
-									var latitude =  position.coords.latitude;
-									var longitude = position.coords.longitude;
-									var userId = JSON.parse(localStorage.getItem("user")).userId;						
-									var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-									var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-									var dd1 = new Date();
-								      var currentHours1 = dd1.getHours();
-								      var currentMin1 = dd1.getMinutes();
-								      var currentSec1 = dd1.getSeconds();
-
-								      if (currentHours1 < 10) {
-								                currentHours1 = "0" + currentHours1;
-								            }
-								      if (currentMin1 < 10) {
-								                currentMin1 = "0" + currentMin1;
-								            }
-								      if (currentSec1 < 10) {
-								                currentSec1 = "0" + currentSec1;
-								            }      
-								    var time = currentHours1+":"+currentMin1+":"+currentSec1;
-									console.log(time);
-									var compareLat = localStorage.getItem("lat");
-							         var compareLong = localStorage.getItem("long");
-							         var threePlacedLat = parseFloat(latitude).toFixed(3);
-							         var threePlacedLong = parseFloat(longitude).toFixed(3);
-							         var threePlacedcompareLat = parseFloat(compareLat).toFixed(3);
-							         var threePlacedcompareLong = parseFloat(compareLong).toFixed(3);
-							         if(threePlacedLat == threePlacedcompareLat && threePlacedLong == threePlacedcompareLong){
-							          locationFlag = 0;
-							         }else{
-							          locationFlag = 1;
-							         }
-
-							         var watch = $cordovaGeolocation.watchPosition({ frequency: 10000 });
-							           watch.promise.then(function() {}, 
-							             function(err) {
-							               // An error occurred.
-							             }, 
-							             function(position) {
-							               // Active updates of the position here
-							               // position.coords.[ latitude / longitude]
-							           });
-							          if(locationFlag == 1){ 
-							           localStorage.setItem("lat", latitude);
-							           localStorage.setItem("long", longitude);
-									var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
-									
-									var form = new FormData();
-									
-							           form.append('ownerId' , userId);
-							           form.append('tickitStatus' , "7");
-							           form.append('msgBody' ,userName);
-							           form.append('tickitType' , "20");
-							           form.append('recipient' , "chris@abc.com");
-							           form.append('subject' , time);
-							           form.append('ip' , "192.168.1.217");
-							           form.append('gps' , latitude + ";" + longitude);
-							             $.ajax({
-													url: manualTickitUrl,
-													data: form,
-													dataType: 'text',
-													processData: false,
-													contentType: false,
-													type: 'POST',
-													success: function(data){
-													//console.log(JSON.stringify(form));	
-													console.log(JSON.stringify(data));
-													},
-													error:function(data){
-														console.log(JSON.stringify(data));
-														}
-												  });
-							             	}	
-								
-								}, function(err) {
-								  console.log(err);
-								});  
+                console.log("Your latitude is " + position.coords.latitude);
+                console.log("Your latitude is " + position.coords.longitude);
+                // Position here: position.coords.latitude, position.coords.longitude
+                var latitude =  position.coords.latitude;
+                var longitude = position.coords.longitude;
+                var userId = JSON.parse(localStorage.getItem("user")).userId;						
+                var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
+                var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
+                var dd1 = new Date();
+                var currentHours1 = dd1.getHours();
+                var currentMin1 = dd1.getMinutes();
+                var currentSec1 = dd1.getSeconds();
+                
+                if (currentHours1 < 10) {
+                  currentHours1 = "0" + currentHours1;
+                }
+                if (currentMin1 < 10) {
+                  currentMin1 = "0" + currentMin1;
+                }
+                if (currentSec1 < 10) {
+                  currentSec1 = "0" + currentSec1;
+                }      
+                var time = currentHours1+":"+currentMin1+":"+currentSec1;
+                console.log(time);
+                var compareLat = localStorage.getItem("lat");
+                var compareLong = localStorage.getItem("long");
+                var threePlacedLat = parseFloat(latitude).toFixed(3);
+                var threePlacedLong = parseFloat(longitude).toFixed(3);
+                var threePlacedcompareLat = parseFloat(compareLat).toFixed(3);
+                var threePlacedcompareLong = parseFloat(compareLong).toFixed(3);
+                if(threePlacedLat == threePlacedcompareLat && threePlacedLong == threePlacedcompareLong){
+                  locationFlag = 0;
+                }else{
+                  locationFlag = 1;
+                }
+                
+                var watch = $cordovaGeolocation.watchPosition({ frequency: 120000 });
+                watch.promise.then(function() {}, 
+                                   function(err) {
+                                     // An error occurred.
+                                   }, 
+                                   function(position) {
+                                     // Active updates of the position here
+                                     // position.coords.[ latitude / longitude]
+                                   });
+                if(locationFlag == 1){ 
+                  localStorage.setItem("lat", latitude);
+                  localStorage.setItem("long", longitude);
+                  var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
+                  
+                  var form = new FormData();
+                  
+                  form.append('ownerId' , userId);
+                  form.append('tickitStatus' , "7");
+                  form.append('msgBody' ,userName);
+                  form.append('tickitType' , "20");
+                  form.append('recipient' , "chris@abc.com");
+                  form.append('subject' , time);
+                  form.append('ip' , "192.168.1.217");
+                  form.append('gps' , latitude + ";" + longitude);
+                  $.ajax({
+                    url: manualTickitUrl,
+                    data: form,
+                    dataType: 'text',
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                      //console.log(JSON.stringify(form));	
+                      console.log(JSON.stringify(data));
+                    },
+                    error:function(data){
+                      console.log(JSON.stringify(data));
+                    }
+                  });
+                }	
+                
+              }, function(err) {
+                console.log(err);
+              });  
 
 	        },15000);
 	      },
@@ -171,20 +171,20 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		var manualTickitUrl = _baseUrl + "tickitService/" + "333234567" +"/createTickit" ;
 		var userId = JSON.parse(localStorage.getItem("user")).userId;						
 		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-		  var dd1 = new Date();
-	      var currentHours1 = dd1.getHours();
-	      var currentMin1 = dd1.getMinutes();
-	      var currentSec1 = dd1.getSeconds();
-
-	      if (currentHours1 < 10) {
-	                currentHours1 = "0" + currentHours1;
-	            }
-	      if (currentMin1 < 10) {
-	                currentMin1 = "0" + currentMin1;
-	            }
-	      if (currentSec1 < 10) {
-	                currentSec1 = "0" + currentSec1;
-	            }      
+		var dd1 = new Date();
+        var currentHours1 = dd1.getHours();
+        var currentMin1 = dd1.getMinutes();
+        var currentSec1 = dd1.getSeconds();
+          
+        if (currentHours1 < 10) {
+            currentHours1 = "0" + currentHours1;
+          }
+        if (currentMin1 < 10) {
+            currentMin1 = "0" + currentMin1;
+          }
+        if (currentSec1 < 10) {
+            currentSec1 = "0" + currentSec1;
+          }      
 	    var time = currentHours1+":"+currentMin1+":"+currentSec1;
 	console.log(time);
 		//var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/createTickit';

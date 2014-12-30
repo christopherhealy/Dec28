@@ -1,25 +1,23 @@
-var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"
-//var _baseUrl = "http://192.168.1.217:8080/flippadoo/mobile/"
+var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
 
 ionicApp.controller('MainCtrl', function($scope,$rootScope ,$ionicLoading,geoLocationService) {
 $scope.showLoader = function (){
-								$ionicLoading.show({
-							     content: '<h1><i class="icon ion-refreshing"></i></h1>',
-							      animation: 'fade-in',
-							      showBackdrop: true,
-							      maxWidth: 200,
-							      showDelay: 50
-							    });
+      $ionicLoading.show({
+      content: '<h1><i class="icon ion-refreshing"></i></h1>',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 50
+    });
  							}
  $scope.hideLoader = function (){
-							$ionicLoading.hide();
+ $ionicLoading.hide();
 						}
 
 });    
 
-
 ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs ,geoLocationService,friendlist,$cordovaSocialSharing,$cordovaCamera,$cordovaNetwork){
-	//$scope.$parent.turnOnAuto();
+    //$scope.$parent.turnOnAuto();
     //$scope.$parent.showLoader();
     //$scope.$parent.hideLoader();
 
@@ -36,15 +34,15 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
   
 	$scope.hideback = true;
  
-  $scope.putAsafeApply = function(fn) {
-		var status = this.$root.$$phase;
-		if(status == '$apply' || status == '$digest') {
-		   if(fn && (typeof(fn) === 'function')) {
-		    fn();
-		 }
-		 } else {
-		this.$apply(fn);
-		}
+	$scope.putAsafeApply = function(fn) {
+	var status = this.$root.$$phase;
+	if(status == '$apply' || status == '$digest') {
+	   if(fn && (typeof(fn) === 'function')) {
+	    fn();
+	 }
+	 } else {
+	this.$apply(fn);
+	}
  };
 
     $scope.login = function() {
@@ -73,15 +71,15 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
 	   	   console.log(JSON.stringify(logindata));
 
 
-	   	   	$scope.$parent.showLoader();
-	        var  responsePromise = $http.post(loginUrl ,logindata,{ cache: false });
+	  $scope.$parent.showLoader();
+	  var  responsePromise = $http.post(loginUrl ,logindata,{ cache: false });
           responsePromise.success(function(data, status, headers, config) {
           console.log(JSON.stringify(data));
           var logindata = (JSON.stringify(data.user));
           if(data.status=='OK'){
-   			localStorage.setItem("buttonShow",true);
-   			localStorage.setItem("networkSet",true);  
-			localStorage.setItem("user",logindata); 
+	    localStorage.setItem("buttonShow",true);
+	    localStorage.setItem("networkSet",true);  
+	    localStorage.setItem("user",logindata); 
             $state.transitionTo('tabs.ticket');  
             $scope.$parent.hideLoader();          
 	      }else{
@@ -96,7 +94,7 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
 	        $scope.$parent.hideLoader();
 	   })
 	  }
-	  } 
+	} 
    }
 
 	  $scope.showfriends = function(){
@@ -106,4 +104,3 @@ ionicApp.controller('HomeTabCtrl', function($scope,$interval,$http,$state, $cord
  });
 
  
-

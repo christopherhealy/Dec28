@@ -359,61 +359,59 @@ $scope.takePicture = function() {
 
 
         $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
-                         console.log("Your Locations ");
-                             console.log("Your latitude is " + position.coords.latitude);
-                             var locationCord = position.coords.latitude + ";" + position.coords.longitude;
-                             var options = new FileUploadOptions();
-                                  options.fileKey="tickitFile";
-                                  options.fileName=imageData.substr(imageData.lastIndexOf('/')+1);
-                                 // options.fileName="Ashish";
-                                  //options.mimeType = "multipart/form-data";
-                                  options.contentType = "multipart/form-data";
-                                  options.chunkedMode = false;
-                                  options.mimeType="image/jpeg";
-                                  options.httpMethod="POST";
-                                  
-                                  options.headers = {
-                                            Connection: "close"
-                                       };
+                  console.log("Your Locations ");
+                  console.log("Your latitude is " + position.coords.latitude);
+                  var locationCord = position.coords.latitude + ";" + position.coords.longitude;
+                  var options = new FileUploadOptions();
+                  options.fileKey="tickitFile";
+                  options.fileName=imageData.substr(imageData.lastIndexOf('/')+1);
+                 // options.fileName="Ashish";
+                  //options.mimeType = "multipart/form-data";
+                  options.contentType = "multipart/form-data";
+                  options.chunkedMode = false;
+                  options.mimeType="image/jpeg";
+                  options.httpMethod="POST";
+                  
+                  options.headers = {
+                            Connection: "close"
+                       };
 
-                                  var userId = JSON.parse(localStorage.getItem("user")).userId;            
-                                  
-                                  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-                                  
-                                  
-                                  var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
-              
-                                  console.log(manualTickitUrl);
-
-                                   var params = new Object();
-                                                  params.ownerId = userId;
-                                                  params.tickitStatus = tickitStatus;
-                                                  params.tickitType = 20;
-                                                  params.recipient = "chris@abc.com";
-                                                  params.subject = subject;
-                                                  params.ip = "192.168.1.217";
-                                                  //params.tickitCustomId = "55555";
-                                                  //params.parentId = "null";
-                                                  params.msgBody = msgBody;
-                                                  params.gps =  locationCord;
-                                                  
-                                                  //params.startDate = null;
-                                                  //params.endDate = null;
-                                                  
-                              
-                                   options.params =  params;
-
-
-                                    console.log(JSON.stringify(options));
-
-                                    var ft = new FileTransfer();
-                                    $scope.$parent.showLoader();
-                                    ft.upload(imageData, manualTickitUrl, win, fail, options);
+                  var userId = JSON.parse(localStorage.getItem("user")).userId;     
+                  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
                                    
-                                        
-                                        }, function(err) {
-                                          console.log(err);
-                                        });
+                  var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
+
+                  console.log(manualTickitUrl);
+
+                   var params = new Object();
+                      params.ownerId = userId;
+                      params.tickitStatus = tickitStatus;
+                      params.tickitType = 20;
+                      params.recipient = "chris@abc.com";
+                      params.subject = subject;
+                      params.ip = "192.168.1.217";
+                      //params.tickitCustomId = "55555";
+                      //params.parentId = "null";
+                      params.msgBody = msgBody;
+                      params.gps =  locationCord;
+                      
+                      //params.startDate = null;
+                      //params.endDate = null;
+                                  
+              
+                   options.params =  params;
+
+
+                    console.log(JSON.stringify(options));
+
+                    var ft = new FileTransfer();
+                    $scope.$parent.showLoader();
+                    ft.upload(imageData, manualTickitUrl, win, fail, options);
+                   
+                        
+                        }, function(err) {
+                          console.log(err);
+                        });
       }
 	                   }
 	                   
@@ -427,7 +425,7 @@ $scope.takePicture = function() {
 	}
 	
 	
-	$scope.ticketupload = function(tickitNumber){
+      $scope.ticketupload = function(tickitNumber){
 
       var type = $cordovaNetwork.getNetwork();
       if(type == "none" ){
@@ -513,26 +511,23 @@ $scope.takePicture = function() {
       });
       
       }
-
 		
-		}
-	
-	
+   }
 	
 	
   function win(r) {
-				    statusTimeDisplay();
-	          $scope.statussucess = true;
+	   statusTimeDisplay();
+	    $scope.statussucess = true;
             $scope.$parent.hideLoader();
             $scope.imageAvailable = false;  
             $scope.main.sub = "";
             $scope.main.msg = "";
-	          //$state.transitionTo('tabs.ticket');    
+	    //$state.transitionTo('tabs.ticket');    
             console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
             console.log(r.response);
-          //  getUploadedImage();
+            //getUploadedImage();
         }
 
         function fail(error) {
