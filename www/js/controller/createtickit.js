@@ -372,8 +372,7 @@ $scope.takePicture = function() {
 
                                   var userId = JSON.parse(localStorage.getItem("user")).userId;            
                                   
-                                  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-                                  
+                                  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;                                  
                                   
                                   var manualTickitUrl = _baseUrl + "tickitService/" + textapiKeyValue +"/createTickit" ;
               
