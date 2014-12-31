@@ -2,11 +2,14 @@
 // Some Whami Global Variables for creating tickits
 var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
 var _recipient = "Location Observation";
-_IPAddress =$_SERVER['HTTP_CLIENT_IP'];
-if (_IPAddress == "")
+
+_IPAddress = $_SERVER['REMOTE_ADDR'];
+
+if (_IPAddress == "undefined")
 {
  var _IPAddress = "999.999.999.999";
 }
+
 var _tickitType = "11";
 var _statusGreen = "8";
 var _statusYellow = "1";
