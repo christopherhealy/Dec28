@@ -83,12 +83,23 @@ $scope.backToHome = function(){
            $scope.ethernet = false;
            $scope.unknown = false;    
 
-           var _IPAddress = cordova.require("cordova/plugin/ipaddress");
+          
+
+	// Some Whami Global Variables for creating tickits
+          var _IPAddress = cordova.require("cordova/plugin/ipaddress");
            _IPAddress.get(function(address) {
                 console.log("IP Address = " + address);
             }, function() {
                 console.log("error");
+            _IPAddress = "999.999.999.999";
             });
+	var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
+	var _recipient = "Location Observation";
+	
+	var _tickitType = "11";
+	var _statusGreen = "8";
+	var _statusYellow = "1";
+	var _statusRed = "7";
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
