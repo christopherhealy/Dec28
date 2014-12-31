@@ -62,7 +62,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 	   form.append('ownerId' , userId);
 	   form.append('tickitStatus' , "7");
 	   form.append('tickitType' , "11");
-	   form.append('recipient' , "chris@abc.com");
+	   form.append('recipient' , _recipient);
 	   form.append('subject' , "Create ticket");
 	   form.append('ip' , _IPAddress);
 	   form.append('gps' , latitudeManual + ";" + longitudeManual);
