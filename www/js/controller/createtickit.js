@@ -82,6 +82,13 @@ $scope.backToHome = function(){
            $scope.fourG = false;
            $scope.ethernet = false;
            $scope.unknown = false;    
+
+           var _IPAddress = cordova.require("cordova/plugin/ipaddress");
+           _IPAddress.get(function(address) {
+                console.log("IP Address = " + address);
+            }, function() {
+                console.log("error");
+            });
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
