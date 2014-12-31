@@ -61,7 +61,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 	   form.append('tickitType' , "11");
 	   form.append('recipient' , "chris@abc.com");
 	   form.append('subject' , "Create ticket");
-	   form.append('ip' , "192.168.1.217");
+	   form.append('ip' , _IPAddress);
 	   form.append('gps' , latitudeManual + ";" + longitudeManual);
 		$.ajax({
 			url: manualTickitUrl,
