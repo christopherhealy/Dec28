@@ -7,14 +7,14 @@
         id        = "com.qdev.WHAMI5"
         version   = "1.0.0">
 
-    <name>WHAMI5</name>
+    <name>Whami v1.0</name>
 
     <description>
-        TEST PGB
+        Cleaned up baseline code - Dec 31 2014
     </description>
 
     <author href="http://qdevinc.com" email="kevin.wei@qdevinc.com">
-        Kevin Wei
+        Kevin Wei and Chris Healy
     </author>
 
 	<!--<preference name="AndroidLaunchMode" value="singleTop" />-->
@@ -96,23 +96,7 @@
     <gap:splash src="res/screen/ios/screen-ipad-landscape.png"          gap:platform="ios"     width="1024" height="768" />
     <gap:splash src="res/screen/windows-phone/screen-portrait.jpg"      gap:platform="winphone" />
 
-    <!--
-        Define access to external domains.
-
-        <access />            - a blank access tag denies access to all external resources.
-        <access origin="*" /> - a wildcard access tag allows access to all external resource.
-
-        Otherwise, you can specify specific domains:
-    -->
+    
     <access origin="*"/>
-    <!--
-        <access origin="http://phonegap.com" />                    - allow any secure requests to http://phonegap.com/
-        <access origin="http://phonegap.com" subdomains="true" />  - same as above, but including subdomains, such as http://build.phonegap.com/
-        <access origin="http://phonegap.com" browserOnly="true" /> - only allows http://phonegap.com to be opened by the child browser.
-    -->
-	<!--
-	<feature name="applicationPreferences">
-		<param name="ios-package" value="applicationPreferences" />
-	</feature>
-	-->
+    
 </widget>
