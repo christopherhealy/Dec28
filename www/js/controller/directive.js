@@ -190,7 +190,7 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		//var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/createTickit';
 		var form = new FormData();
 		form.append('ownerId' , userId);
-		form.append('tickitStatus' , _statusGreen);
+		form.append('tickitStatus' , "8");
 		form.append('msgBody' , userName);
 		form.append('tickitType' , "20");
 		form.append('recipient' , _recipient);

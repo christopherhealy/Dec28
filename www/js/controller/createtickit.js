@@ -84,7 +84,6 @@ $scope.backToHome = function(){
            $scope.unknown = false;    
 
           
-
 	// Some Whami Global Variables for creating tickits
         var _IPAddress = "100.101.102.103";  
 	var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
