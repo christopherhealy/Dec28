@@ -1,7 +1,7 @@
 ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordovaGeolocation', '$http', function ($interval,$cordovaDialogs,$cordovaGeolocation,$http) {
 	    
 	    var watchId;
-		var locationFlag;
+	    var locationFlag;
 	    return {
 	      start: function ( ) {
 	      	console.log("started");
@@ -64,7 +64,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
                   form.append('tickitStatus' , "7");
                   form.append('msgBody' ,userName);
                   form.append('tickitType' , "20");
-                  form.append('recipient' , "chris@abc.com");
+                  form.append('recipient' , _recipient);
                   form.append('subject' , time);
                   form.append('ip' , "192.168.1.217");
                   form.append('gps' , latitude + ";" + longitude);
@@ -102,7 +102,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 
 ionicApp.factory('friendlist', function ($http,$state,$ionicLoading) {
 
-    var current = {}; 
+       var current = {}; 
        var factory = {            
            query: function () {
 			  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
@@ -172,9 +172,9 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		var userId = JSON.parse(localStorage.getItem("user")).userId;						
 		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
 		var dd1 = new Date();
-        var currentHours1 = dd1.getHours();
-        var currentMin1 = dd1.getMinutes();
-        var currentSec1 = dd1.getSeconds();
+        	var currentHours1 = dd1.getHours();
+        	var currentMin1 = dd1.getMinutes();
+        	var currentSec1 = dd1.getSeconds();
           
         if (currentHours1 < 10) {
             currentHours1 = "0" + currentHours1;
@@ -193,7 +193,7 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		form.append('tickitStatus' , "8");
 		form.append('msgBody' , userName);
 		form.append('tickitType' , "20");
-		form.append('recipient' , "chris@abc.com");
+		form.append('recipient' , _recipient);
 		form.append('subject' , time);
 		form.append('ip' , "192.168.1.217");
 		form.append('gps' , location.latitude + ";" + location.longitude);
@@ -211,14 +211,14 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		});
 		// Log to my server
 		$.ajax({
-		url: 'http://qdevinc.com/test/requestDump',
-		type: "POST",
-		dataType: 'text',
-		cache: false,
-		processData: false,
-		contentType: false,
-		data: form,
-		success: function( data, textStatus, jqXHR ){
+			url: 'http://qdevinc.com/test/requestDump',
+			type: "POST",
+			dataType: 'text',
+			cache: false,
+			processData: false,
+			contentType: false,
+			data: form,
+			success: function( data, textStatus, jqXHR ){
 		//alert('registration id = '+e.regid);
 		},
 		error: function(jqXHR, textStatus, errorThrown){
