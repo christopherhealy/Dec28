@@ -64,7 +64,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
                   form.append('tickitStatus' , "7");
                   form.append('msgBody' ,userName);
                   form.append('tickitType' , "20");
-                  form.append('recipient' , _recipient);
+                  form.append('recipient' , "chris@abc.com");
                   form.append('subject' , time);
                   form.append('ip' , "192.168.1.217");
                   form.append('gps' , latitude + ";" + longitude);
@@ -193,7 +193,7 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		form.append('tickitStatus' , "8");
 		form.append('msgBody' , userName);
 		form.append('tickitType' , "20");
-		form.append('recipient' , _recipient);
+		form.append('recipient' , "chris@abc.com");
 		form.append('subject' , time);
 		form.append('ip' , "192.168.1.217");
 		form.append('gps' , location.latitude + ";" + location.longitude);
