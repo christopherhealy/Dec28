@@ -84,10 +84,12 @@ $scope.backToHome = function(){
            $scope.unknown = false;    
 
 	// Some Whami Global Variables for creating tickits
+
 	var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
 	var _recipient = "Location Observation";
-	var _IPAddress = "999.999.999.999";
-	//need to install a plugin to get the device IP Address
+	var _IPAddress = "192.168.1.999";
+	
+//need to install a plugin to get the device IP Address
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
@@ -130,7 +132,7 @@ $scope.backToHome = function(){
         }
         function onOffline() {
          
-          flagNetwork = 1;
+       flagNetwork = 1;
        $state.go($state.$current, null, { reload: true });  
         }
 
