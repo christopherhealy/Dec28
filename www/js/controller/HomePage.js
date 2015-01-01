@@ -1,6 +1,8 @@
 
 // the server is our Canadian test server at DAIR-Canarie
 var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
+var _recipient = "Location Observation";
+var _IPAddress = "100.101.101.101";
 
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {

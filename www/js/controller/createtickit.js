@@ -83,8 +83,7 @@ $scope.backToHome = function(){
            $scope.ethernet = false;
            $scope.unknown = false;    
 
-	var _recipient = "Location Observation";
-	var _IPAddress = "100.101.101.101";
+	
 	
 	var type = $cordovaNetwork.getNetwork();
 
