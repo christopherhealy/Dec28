@@ -82,14 +82,6 @@ $scope.backToHome = function(){
            $scope.fourG = false;
            $scope.ethernet = false;
            $scope.unknown = false;    
-
-	// Some Whami Global Variables for creating tickits
-
-	var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
-	var _recipient = "Location Observation";
-	var _IPAddress = "192.168.1.999";
-	
-//need to install a plugin to get the device IP Address
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
@@ -132,7 +124,7 @@ $scope.backToHome = function(){
         }
         function onOffline() {
          
-       flagNetwork = 1;
+          flagNetwork = 1;
        $state.go($state.$current, null, { reload: true });  
         }
 
@@ -395,9 +387,9 @@ $scope.takePicture = function() {
                       params.ownerId = userId;
                       params.tickitStatus = tickitStatus;
                       params.tickitType = 20;
-                      params.recipient = _recipient;
+                      params.recipient = "chris@abc.com";
                       params.subject = subject;
-                      params.ip = _IPAddress;
+                      params.ip = "192.168.1.217";
                       //params.tickitCustomId = "55555";
                       //params.parentId = "null";
                       params.msgBody = msgBody;
@@ -486,9 +478,9 @@ $scope.takePicture = function() {
            form.append('tickitStatus' , tickitStatus);
            form.append('msgBody' , msgBody);
            form.append('tickitType' , "20");
-           form.append('recipient' , _recipient);
+           form.append('recipient' , "chris@abc.com");
            form.append('subject' , subject);
-           form.append('ip' , _IPAddress);
+           form.append('ip' , "192.168.1.217");
            form.append('gps' , latitudeManual + ";" + longitudeManual);
            $scope.$parent.showLoader();
              $.ajax({
