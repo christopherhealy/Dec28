@@ -1,12 +1,6 @@
 
-// Some Whami Global Variables for creating tickits
+// the server is our Canadian test server at DAIR-Canarie
 var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
-var _recipient = "Location Observation";
-var _IPAddress = "192.168.1.217";
-var _tickitType = "11";
-var _statusGreen = "";
-var _statusYellow = "";
-var _statusRed = "";
 
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {
@@ -57,7 +51,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 	   form.append('tickitType' , "11");
 	   form.append('recipient' , _recipient);
 	   form.append('subject' , "Create ticket");
-	   form.append('ip' , "192.168.1.217");
+	   form.append('ip' , _IPAddress);
 	   form.append('gps' , latitudeManual + ";" + longitudeManual);
 		$.ajax({
 			url: manualTickitUrl,
