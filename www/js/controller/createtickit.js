@@ -82,6 +82,14 @@ $scope.backToHome = function(){
            $scope.fourG = false;
            $scope.ethernet = false;
            $scope.unknown = false;    
+
+	var _recipient = "Location Observation";
+	var _IPAddress = "999.999.999.999";
+	var _tickitType = "11";
+	var _statusGreen = "";
+	var _statusYellow = "";
+	var _statusRed = "";
+
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
