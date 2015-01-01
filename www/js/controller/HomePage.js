@@ -5,7 +5,7 @@ ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cor
 		//alert("clicked");
 	 $state.transitionTo('tabs.home');
 	}
-    
+    var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"; 
     var TimeInterval = localStorage.getItem("timeInterVal");
 	 alert(TimeInterval);
 	if(TimeInterval == null){
