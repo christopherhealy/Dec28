@@ -81,18 +81,7 @@ $scope.backToHome = function(){
            $scope.threeG = false;
            $scope.fourG = false;
            $scope.ethernet = false;
-           $scope.unknown = false;
-
-	// Some Whami Global Variables for creating tickits
-	   
-
-	var _recipient = "Location Observation";
-	var _IPAddress = "999.999.999.999";
-	var _tickitType = "11";
-	var _statusGreen = "";
-	var _statusYellow = "";
-	var _statusRed = "";
-
+           $scope.unknown = false;    
         var type = $cordovaNetwork.getNetwork();
 
         var isOnline = $cordovaNetwork.isOnline();
