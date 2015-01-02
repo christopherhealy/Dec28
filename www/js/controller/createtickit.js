@@ -386,18 +386,12 @@ $scope.takePicture = function() {
                    var params = new Object();
                       params.ownerId = userId;
                       params.tickitStatus = tickitStatus;
-                      params.tickitType = 20;
+                      params.tickitType = _tickitType;
                       params.recipient = _recipient;
                       params.subject = subject;
                       params.ip = _IPAddress;
-                      //params.tickitCustomId = "55555";
-                      //params.parentId = "null";
                       params.msgBody = msgBody;
-                      params.gps =  locationCord;
-                      
-                      //params.startDate = null;
-                      //params.endDate = null;
-                                  
+                      params.gps =  locationCord;                                  
               
                    options.params =  params;
 
@@ -477,7 +471,7 @@ $scope.takePicture = function() {
            form.append('ownerId' , userId);
            form.append('tickitStatus' , tickitStatus);
            form.append('msgBody' , msgBody);
-           form.append('tickitType' , "20");
+           form.append('tickitType' , _tickitType);
            form.append('recipient' , _recipient);
            form.append('subject' , subject);
            form.append('ip' , _IPAddress);

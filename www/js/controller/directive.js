@@ -61,9 +61,9 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
                   var form = new FormData();
                   
                   form.append('ownerId' , userId);
-                  form.append('tickitStatus' , "7");
+                  form.append('tickitStatus' , _tickitStatusGreen);
                   form.append('msgBody' ,userName);
-                  form.append('tickitType' , "20");
+                  form.append('tickitType' , _tickitType );
                   form.append('recipient' , _recipient);
                   form.append('subject' , time);
                   form.append('ip' , _IPAddress);
@@ -190,9 +190,9 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		
 		var form = new FormData();
 		form.append('ownerId' , userId);
-		form.append('tickitStatus' , "8");
+		form.append('tickitStatus' , _tickitStatusGreen);
 		form.append('msgBody' , userName);
-		form.append('tickitType' , "20");
+		form.append('tickitType' , "_tickitType );
 		form.append('recipient' , _recipient);
 		form.append('subject' , time);
 		form.append('ip' , _IPAddress);
