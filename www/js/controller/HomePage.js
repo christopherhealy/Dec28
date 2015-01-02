@@ -2,7 +2,7 @@
 // Some Whami Global Variables for creating tickits
 var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"; //web services 
 var _AutoFrequency = 920000; //how often auto updates - the original default was 10000
-var _soundAutoAlert = true; //device buzzes when auto fires
+var _soundAutoAlert = false; //device buzzes when auto fires
 var _recipient = "Location Observation";
 var _IPAddress = "100.101.102.103"; //TBD we need to get the real device IP address - there is a plugin to do that
 var _sendMobileDataUrlAPIKey = "333234567"; //is this needed? If so is it literal? - search for sendMobileDataUrl in createtickit
