@@ -172,22 +172,22 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		var userId = JSON.parse(localStorage.getItem("user")).userId;						
 		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
 		var dd1 = new Date();
-        var currentHours1 = dd1.getHours();
-        var currentMin1 = dd1.getMinutes();
-        var currentSec1 = dd1.getSeconds();
+                var currentHours1 = dd1.getHours();
+        	var currentMin1 = dd1.getMinutes();
+        	var currentSec1 = dd1.getSeconds();
           
-        if (currentHours1 < 10) {
-            currentHours1 = "0" + currentHours1;
-          }
-        if (currentMin1 < 10) {
-            currentMin1 = "0" + currentMin1;
-          }
-        if (currentSec1 < 10) {
-            currentSec1 = "0" + currentSec1;
-          }      
-	    var time = currentHours1+":"+currentMin1+":"+currentSec1;
-	console.log(time);
-		//var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/createTickit';
+        	if (currentHours1 < 10) {
+            	   currentHours1 = "0" + currentHours1;
+          	}
+        	if (currentMin1 < 10) {
+            	   currentMin1 = "0" + currentMin1;
+          	}
+        	if (currentSec1 < 10) {
+            	   currentSec1 = "0" + currentSec1;
+          	}      
+	    	var time = currentHours1+":"+currentMin1+":"+currentSec1;
+		console.log(time);
+		
 		var form = new FormData();
 		form.append('ownerId' , userId);
 		form.append('tickitStatus' , "8");
@@ -198,13 +198,13 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		form.append('ip' , _IPAddress);
 		form.append('gps' , location.latitude + ";" + location.longitude);
 		$.ajax({
-		url: manualTickitUrl,
-		data: form,
-		dataType: 'text',
-		processData: false,
-		contentType: false,
-		type: 'POST',
-		success: function(data){
+			url: manualTickitUrl,
+			data: form,
+			dataType: 'text',
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			success: function(data){
 		},
 		error:function(data){
 		}
@@ -236,12 +236,12 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		bgGeo.configure(callbackFn, failureFn, {
 		url: 'http://qdevinc.com/test/requestDump', // <-- only required for Android; ios allows javascript callbacks for your http
 		params: {
-            auth_token: 'user_secret_auth_token',    //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
-            foo: 'bar'                              //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
-        },
-        headers: {                                   // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations
-            "X-Foo": "BAR"
-        },
+            		auth_token: 'user_secret_auth_token',    //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
+            		foo: 'bar'                              //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
+        		},
+        	headers: {                                   // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations
+            		"X-Foo": "BAR"
+        		 },
 		desiredAccuracy: 50,
 		stationaryRadius: 20,
 		distanceFilter: 30,
@@ -253,16 +253,15 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		},
 		startTracking: function(){
 			console.log("startTracking");
-		// Turn ON the background-geolocation system. The user will be tracked whenever they suspend the app.
-		var bgGeo = window.plugins.backgroundGeoLocation;
-		bgGeo.start();
+			// Turn ON the background-geolocation system. The user will be tracked whenever they suspend the app.
+			var bgGeo = window.plugins.backgroundGeoLocation;
+			bgGeo.start();
 		},
 		stopTracking: function(){
 		console.log("stopTracking");
 		var bgGeo = window.plugins.backgroundGeoLocation;
 		bgGeo.stop();
-		}
-			
+		}		
 	      
 	    };
 	  }]);

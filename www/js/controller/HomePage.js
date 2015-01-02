@@ -1,12 +1,11 @@
 
 // Some Whami Global Variables for creating tickits
-var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/";
+var _baseUrl = "http://dev.tickittaskit.com/flippadoo/mobile/"; //web services 
+var _AutoFrequency = 120000; //how often auto updates
+var _soundAutoAlert = true; //device buzzes when auto fires
 var _recipient = "Location Observation";
-var _IPAddress = "999.999.999.999";
-var _tickitType = "11";
-var _statusGreen = "";
-var _statusYellow = "";
-var _statusRed = "";
+var _IPAddress = "999.999.999.999"; //TBD we need to get the real device IP address - there is a plugin to do that
+
 
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {
