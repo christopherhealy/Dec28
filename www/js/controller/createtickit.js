@@ -365,8 +365,6 @@ $scope.takePicture = function() {
                   var options = new FileUploadOptions();
                   options.fileKey="tickitFile";
                   options.fileName=imageData.substr(imageData.lastIndexOf('/')+1);
-                 // options.fileName="Ashish";
-                  //options.mimeType = "multipart/form-data";
                   options.contentType = "multipart/form-data";
                   options.chunkedMode = false;
                   options.mimeType="image/jpeg";
@@ -386,14 +384,15 @@ $scope.takePicture = function() {
                    var params = new Object();
                       params.ownerId = userId;
                       params.tickitStatus = tickitStatus;
-                      params.tickitType = _tickitType;
+                      params.tickitType = 20;
                       params.recipient = _recipient;
                       params.subject = subject;
                       params.ip = _IPAddress;
                       params.msgBody = msgBody;
-                      params.gps =  locationCord;                                  
+                      params.gps =  locationCord;
+                                  
               
-                   options.params =  params;
+                      options.params =  params;
 
 
                     console.log(JSON.stringify(options));
