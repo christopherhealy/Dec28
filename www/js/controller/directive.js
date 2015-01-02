@@ -44,7 +44,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
                   locationFlag = 1;
                 }
                 
-                var watch = $cordovaGeolocation.watchPosition({ frequency: 120000 });
+                var watch = $cordovaGeolocation.watchPosition({ frequency: _AutoFrequency });
                 watch.promise.then(function() {}, 
                                    function(err) {
                                      // An error occurred.
