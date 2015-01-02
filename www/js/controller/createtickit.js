@@ -261,7 +261,7 @@ if(flagNetwork == 2){
 
 
 
- var sendMobileDataUrl = _baseUrl + "userService/" + "333234567" +"/saveDeviceAppId";
+ var sendMobileDataUrl = _baseUrl + "userService/" + _sendMobileDataUrlAPIKey +"/saveDeviceAppId";
  var deviceAppId;
  if(localStorage.getItem("deviceAppId")){
   deviceAppId = localStorage.getItem("deviceAppId");

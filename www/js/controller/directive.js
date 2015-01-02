@@ -106,15 +106,15 @@ ionicApp.factory('friendlist', function ($http,$state,$ionicLoading) {
        var factory = {            
            query: function () {
 			  var textapiKeyValue = JSON.parse(localStorage.getItem("user")).apiKey;
-			  var URL =  _baseUrl + "userService/" + 333234567 + "/fetchUsers";
+			  var URL =  _baseUrl + "userService/" + _sendMobileDataUrlAPIKey + "/fetchUsers";
 			  var getFriendListData = {};
 			  $ionicLoading.show({
-							     content: '<h1><i class="icon ion-refreshing"></i></h1>',
-							      animation: 'fade-in',
-							      showBackdrop: true,
-							      maxWidth: 200,
-							      showDelay: 50
-							    });
+					     content: '<h1><i class="icon ion-refreshing"></i></h1>',
+					      animation: 'fade-in',
+					      showBackdrop: true,
+					      maxWidth: 200,
+					      showDelay: 50
+					    });
               var  data = $http.get(URL,getFriendListData,{ cache: false }).then(function (result) {
                          //console.log(JSON.stringify(result));
                             current = result.data.userList; 
@@ -168,7 +168,7 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		var callbackFn = function(location) {
 		console.log('[js] BackgroundGeoLocation callback: ' + location.latitude + ',' + location.longitude);
 		//create tickit
-		var manualTickitUrl = _baseUrl + "tickitService/" + "333234567" +"/createTickit" ;
+		var manualTickitUrl = _baseUrl + "tickitService/" + _sendMobileDataUrlAPIKey +"/createTickit" ;
 		var userId = JSON.parse(localStorage.getItem("user")).userId;						
 		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
 		var dd1 = new Date();
