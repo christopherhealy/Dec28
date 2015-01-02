@@ -7,7 +7,7 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-	  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <link href="css/leaflet.label.css" rel="stylesheet">
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -52,7 +52,7 @@
     </script>
 
     <script id="home.html" type="text/ng-template" >
-      <ion-view title="Whami" hide-back-button="{{hideback}}">
+      <ion-view title="Welcome to Whami" hide-back-button="{{hideback}}">
         <ion-content class="padding">
               <div class="topsection">
                   <img class="tickitIcon" src="img/whami1.png" />
@@ -84,7 +84,7 @@
    
    
     <script id="createticket.html" type="text/ng-template">
-<ion-view title="New Whami" hide-back-button="true">
+<ion-view title="Whami v1.0" hide-back-button="true">
 
     <ion-nav-buttons side="left">
           <a class="button button-icon ion-arrow-left-c" ng-click="backToHome()"></a>
@@ -385,9 +385,7 @@
               ng-style="{'line-height': getItemHeight(item) + 'px'}"
               ng-class="{'item-divider': item.isLetter}">
               <span  class="fleft">
-              <img ng-if="!item.isLetter" ng-src="http://placekitten.com/60/{{55 + ($index % 10)}}">
-
-             
+                          
               {{item.letter || (item.first_name+' '+item.last_name)}}
               </span>
               
