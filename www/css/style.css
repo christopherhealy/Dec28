@@ -18,13 +18,13 @@
 .description{width:77%;}
 .note{margin-top:10px; margin-bottom:20px; margin-right:20px;}
 .reminder{width:77%;}
-.subject{margin-top:10px; margin-bottom:40px; margin-right:10px;}
+.subject{margin-top:8px; margin-bottom:40px; margin-right:8px;}
 .votingoption{margin-left:-15px;}
 .yes{margin-right:-5px;}
 .mayBe{margin-right:-5px;}
 .mayBePortion{padding:0px;}
 .no{margin-right:-5px;}
-.startWhami{height:150px;}
+.startWhami{height:135px;}
 .nameMrgn{margin-top: 50px; display: block;}
 .tickitIcon{position: absolute;left: 0px;right: 0px; width: 48px;height: 48px;margin: auto;}
 .topsection{height: 55px;}

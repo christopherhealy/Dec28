@@ -432,11 +432,11 @@ $scope.takePicture = function() {
           alert("No Network Connection");
       }else{
          // alert("else");
-          var tickitStatus = tickitNumber;
-    var subject = document.getElementById("subject").value;
+      var tickitStatus = tickitNumber;
+      var subject = document.getElementById("subject").value;
       var msgBody = document.getElementById("msgbody").value;
       var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
-     var dd = new Date();
+      var dd = new Date();
       var currentHours = dd.getHours();
       var currentMin = dd.getMinutes();
       var currentSec = dd.getSeconds();
@@ -450,7 +450,7 @@ $scope.takePicture = function() {
       if (currentSec < 10) {
                 currentSec = "0" + currentSec;
             }      
-    var tickittime = currentHours+":"+currentMin+":"+currentSec;
+      var tickittime = currentHours+":"+currentMin+":"+currentSec;
       var flag = 0;
       
       if(subject == ""){
@@ -484,12 +484,12 @@ $scope.takePicture = function() {
            form.append('gps' , latitudeManual + ";" + longitudeManual);
            $scope.$parent.showLoader();
              $.ajax({
-            url: manualTickitUrl,
-            data: form,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            type: 'POST',
+	            url: manualTickitUrl,
+	            data: form,
+	            dataType: 'text',
+	            processData: false,
+	            contentType: false,
+	            type: 'POST',
             success: function(data){
               statusTimeDisplay();
               $scope.$parent.hideLoader();
