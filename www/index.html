@@ -26,10 +26,7 @@
     <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
     <script src="ng-cordova.js"></script>
     <script src="cordova.js"></script>
-    
-
-    <!-- your app's js -->
-    
+       
   </head>
   <body ng-controller="MainCtrl as main">
     
@@ -39,7 +36,6 @@
     </ion-nav-bar>
              
     <ion-nav-view animation="slide-left-right"></ion-nav-view>
-
 
     <script id="tabs.html" type="text/ng-template">
       <ion-tabs class="tabs-icon-top tabs-positive tabs-item-hide">
@@ -62,8 +58,7 @@
         	  <label class="item item-input">
         		<input type="text" placeholder="Enter Your Email Id" id="validateEmail" ng-model="main.textValue">
         	  </label>
-        	</div> 
-          
+        	</div>          
       
       <a class="button button-block button-balanced startWhami" ng-click="login()"> 
          <span class="nameMrgn">Start using Whami</span>
@@ -83,7 +78,7 @@
 
    
    
-    <script id="createticket.html" type="text/ng-template">
+<script id="createticket.html" type="text/ng-template">
 <ion-view title="Whami v1.0" hide-back-button="true">
 
     <ion-nav-buttons side="left">
@@ -141,16 +136,15 @@
                 </div>
           </div>
 
-
-            <div class="fright" ng-show="imageAvailable">
+          <div class="fright" ng-show="imageAvailable">
               <button class="button button-small button-assertive" ng-click="deleteImage()">
                 Clear
               </button>
             </div>
   					
-						  <label class="item item-input item-stacked-label">
-							  <textarea placeholder="Description" id="msgbody" rows="5" cols="50" ng-model="main.msg"></textarea>
-						  </label>
+			<label class="item item-input item-stacked-label">
+				<textarea placeholder="Description" id="msgbody" rows="5" cols="50" ng-model="main.msg"></textarea>
+			</label>
 				 
 			<div class="row" ng-show="!imageAvailable">
 					<div class="col col-50"> 
@@ -171,8 +165,7 @@
 						 </button>
 					</div>
 			</div>
-					  
-					 
+					  		 
 					  
 			  <div class="row" ng-show="imageAvailable">		  
 					<div class="col col-50"> 
@@ -391,10 +384,8 @@
               
                <button ng-if="!item.isLetter" class="addFrnd button icon-right ion-person-add button-positive fright">add friend</button>
 
-
             </a>
-
-           
+               
 
           </div>
       </ion-content>
@@ -536,9 +527,7 @@ ionicApp.run(function($rootScope, $ionicLoading, $ionicPlatform,$cordovaPush,bac
   }, function(err) {
     console.log(err);
       // An error occured. Show a message to the user
-  });
-
-  
+  });    
   
     
   })
@@ -574,67 +563,7 @@ console.log('success:'+ result );
 function errorHandler (error) {
 console.log('error:'+ error );
 }
-
-       var downloadSize = 244736;
-            var imageAddr = "http://www.youtubedownloaderhd.com/images/youtube-hd.jpg" + "?n=" + Math.random();
-            var startTime, endTime = 0;
-            var download = new Image();
-
-            download.onload = function () {
-              //alert("down");
-                endTime = (new Date()).getTime();
-                showResults(startTime, endTime, imageAddr, downloadSize);
-            }
-
-            startTime = (new Date()).getTime();
-            download.src = imageAddr;
-
-       
-
-        function isConnected(){
-         //alert("conn");
-            var xhr = new XMLHttpRequest();
-            var file = "http://farm6.static.flickr.com/5035/5802797131_a729dac808_b.jpg";
-            var r = Math.round(Math.random() * 10000);
-            xhr.open('HEAD', file + "?subins=" + r, false);
-            try {
-                xhr.send();
-                if (xhr.status >= 200 && xhr.status < 304) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (e) {
-                return false;
-            }   
-        }
-
-        function showResults(startTime, endTime, imageAddr, downloadSize) {
-            if(isConnected){
-              //alert("ahow");
-                var duration = (endTime - startTime) / 1000; //Math.round()
-                var bitsLoaded = downloadSize * 8;
-                var speedBps = (bitsLoaded / duration).toFixed(2);
-                var speedKbps = (speedBps / 1024).toFixed(2);
-                var finalSpeed = (speedKbps/10);
-                //alert("final speed" + ":" + finalSpeed);
-                //alert("final duration" + ":" + duration);
-                if(finalSpeed < 21){
-                  //alert("low");
-                   // Slow Internet
-
-                } else if(finalSpeed >=21 && finalSpeed < 30){
-                  //alert("m");
-                   // Avg Internet
-
-                } else if(finalSpeed >= 30){
-                 // alert("h");
-                  // Fast Internet
-                }
-            }else{
-                //No intenet
-            }    
-        }    
+    
 
 </script>
 
