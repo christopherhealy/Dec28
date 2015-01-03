@@ -414,9 +414,6 @@
   
   <script>
       var ionicApp = angular.module('ionicApp', ['ionic', 'ngCordova', 'leaflet-directive']);
-      //are these test files needed? If so, replace with ones under our direct control
-      var InternetTestImage1 = 'http://www.youtubedownloaderhd.com/images/youtube-hd.jpg';
-      var InternetTestImage2 = 'http://farm6.static.flickr.com/5035/5802797131_a729dac808_b.jpg';
 
       ionicApp.config(function ($stateProvider, $urlRouterProvider) {
 
@@ -541,6 +538,9 @@
                   // An error occured. Show a message to the user
               });
 
+
+
+
           })
 
 
@@ -576,7 +576,7 @@
       }
 
       var downloadSize = 244736;
-      var imageAddr = InternetTestImage1 + "?n=" + Math.random();
+      var imageAddr = "http://www.youtubedownloaderhd.com/images/youtube-hd.jpg" + "?n=" + Math.random();
       var startTime, endTime = 0;
       var download = new Image();
 
@@ -594,7 +594,7 @@
       function isConnected() {
           //alert("conn");
           var xhr = new XMLHttpRequest();
-          var file = InternetTestImage2;
+          var file = "http://farm6.static.flickr.com/5035/5802797131_a729dac808_b.jpg";
           var r = Math.round(Math.random() * 10000);
           xhr.open('HEAD', file + "?subins=" + r, false);
           try {
