@@ -13,7 +13,7 @@ var _subject = "Create tickit";
 var _timeInterVal = 300000;
 var _dumpRequest = "http://qdevinc.com/test/requestDump";
 var _debugSound = true;
-var _notificationTitle = "Whami tracking|;
+var _notificationTitle = "Whami tracking";
 
 ionicApp.controller('HomePagectrl', function($scope,$interval,$http,$state, $cordovaGeolocation,$cordovaDialogs,geoLocationService) {
 	$scope.setup = function() {
