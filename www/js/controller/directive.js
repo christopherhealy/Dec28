@@ -6,8 +6,7 @@ ionicApp.service('geoLocationService', ['$interval', '$cordovaDialogs', '$cordov
 	      start: function ( ) {
 	      	console.log("started");
 	        watchId = $interval(function () {
-	          //alert(TimeInterval);
-	          $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
+	        $cordovaGeolocation.getCurrentPosition({maximumAge: 7000, timeout: 15000, enableHighAccuracy: true}).then(function(position) {
                 console.log("Your latitude is " + position.coords.latitude);
                 console.log("Your latitude is " + position.coords.longitude);
                 // Position here: position.coords.latitude, position.coords.longitude
@@ -144,30 +143,17 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 	    return {		
 	    configureBackgroundGeoLocation: function() {
 	    	console.log("configureBackgroundGeoLocation");
-		// Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
-		// in order to prompt the user for Location permission.
 		window.navigator.geolocation.getCurrentPosition(function(location) {
 		console.log('Location from Phonegap');
 		});
 		var bgGeo = window.plugins.backgroundGeoLocation;
-		/**
-		* This would be your own callback for Ajax-requests after POSTing background geolocation to your server.
-		*/
 		var yourAjaxCallback = function(response) {
-		////
-		// IMPORTANT: You must execute the #finish method here to inform the native plugin that you're finished,
-		// and the background-task may be completed. You must do this regardless if your HTTP request is successful or not.
-		// IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-		//
-		bgGeo.finish();
-		//document.getElementById('app').innerHTML += "yourAjaxCallback is called <br>";
+		bgGeo.finish(); //Must finish or Whami will crash
 		};
-		/**
-		* This callback will be executed every time a geolocation is recorded in the background.
-		*/
+		//executed every time a geolocation is recorded in the background.
 		var callbackFn = function(location) {
 		console.log('[js] BackgroundGeoLocation callback: ' + location.latitude + ',' + location.longitude);
-		//create tickit
+		//create Auto tickit
 		var manualTickitUrl = _baseUrl + "tickitService/" + _sendMobileDataUrlAPIKey +"/createTickit" ;
 		var userId = JSON.parse(localStorage.getItem("user")).userId;						
 		var userName = JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName;
@@ -209,17 +195,16 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		error:function(data){
 		}
 		});
-		// Log to my server
+		// this is a log back to Kevin's server - is this still required?
 		$.ajax({
-		url: 'http://qdevinc.com/test/requestDump',
-		type: "POST",
-		dataType: 'text',
-		cache: false,
-		processData: false,
-		contentType: false,
-		data: form,
-		success: function( data, textStatus, jqXHR ){
-		//alert('registration id = '+e.regid);
+			url: _dumpRequest,
+			type: "POST",
+			dataType: 'text',
+			cache: false,
+			processData: false,
+			contentType: false,
+			data: form,
+			success: function( data, textStatus, jqXHR ){
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 		},
@@ -245,10 +230,10 @@ ionicApp.service('backGeoLocationService', ['$cordovaGeolocation', '$http', func
 		desiredAccuracy: 50,
 		stationaryRadius: 20,
 		distanceFilter: 30,
-		notificationTitle: 'WHAMI Tracking', // <-- android only, customize the title of the notification
+		notificationTitle: _notificationTitle, // <-- android only, customize the title of the notification
 		notificationText: 'Enabled', // <-- android only, customize the text of the notification
 		activityType: "AutomotiveNavigation", // <-- iOS-only
-		debug: true // <-- enable this hear sounds for background-geolocation life-cycle.
+		debug: _debugSound // <-- enable this hear sounds for background-geolocation life-cycle.
 		});
 		},
 		startTracking: function(){
